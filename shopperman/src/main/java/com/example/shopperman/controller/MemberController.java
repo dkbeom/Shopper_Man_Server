@@ -26,7 +26,7 @@ public class MemberController {
     @Autowired
     private SecurityService securityService;
 
-    
+    // 회원가입
     @PostMapping("/join")
     public String join(@RequestBody Member member) {
     // 파라미터: id, pwd, name, nickname
@@ -44,6 +44,7 @@ public class MemberController {
         return "{\"result\" : \"JOIN_FAILURE\"}";
     }
 
+    // 로그인(토큰 반환)
     @PostMapping("/login")
     public Map<String, Object> login(@RequestBody LoginForm loginForm) {
     // 파라미터: id, pwd
