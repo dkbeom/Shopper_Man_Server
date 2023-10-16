@@ -144,10 +144,8 @@ public class TspGreedyAlgorithm {
 			// 다음 Location이 MarketLocation 이면, 심부름 요청자 리스트 적어두기
 			if(locationList.get(closestLocation - 1) instanceof MarketLocation) {
 				MarketLocation m = (MarketLocation) locationList.get(closestLocation - 1);
-				if(m.getRequesterNameList() != null) {
-					for(String requester : m.getRequesterNameList()) {
-						requesterNameCheckList.add(requester);
-					}
+				if(m.getRequesterName() != null) {
+					requesterNameCheckList.add(m.getRequesterName());
 				}
 			}
 			// 다음 Location이 RequesterLocation 이면, 심부름 요청자 리스트 다시 지우기 (메모리를 위해서)

@@ -19,7 +19,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-@Service
+@Service("securityService")
 @PropertySource("classpath:local.properties")
 public class SecurityServiceImp implements SecurityService {
     

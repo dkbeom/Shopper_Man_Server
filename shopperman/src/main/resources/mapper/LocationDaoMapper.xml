@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shopperman.dao.LocationDao">
+
+    <!-- getLocationById -->
+    <select id="getLocationsById" resultType="com.example.shopperman.entity.Location" >
+        SELECT * FROM LOCATION
+        WHERE ID = #{id}
+    </select>
+    
+    <!-- getLocationsByRequesterName -->
+    <select id="getLocationsByRequesterName" resultType="com.example.shopperman.entity.Location">
+    	SELECT * FROM LOCATION
+    	WHERE REQUESTER_NAME = #{requesterName}
+    </select>
+
+    <!-- getLocationList -->
+    <select id="getLocationList" resultType="com.example.shopperman.entity.Location" >
+        SELECT * FROM LOCATION
+    </select>
+
+    <!-- setLocation -->
+    <insert id="setLocation" parameterType="com.example.shopperman.entity.Location" >
+        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, TYPE)
+        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, 0)
+    </insert>
+    
+    <!-- setMarketLocation -->
+    <insert id="setMarketLocation" parameterType="com.example.shopperman.entity.MarketLocation">
+        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, MARKET_NAME, TYPE)
+        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, #{marketName}, 1)
+    </insert>
+    
+    <!-- setLocation -->
+    <insert id="setRequesterLocation" parameterType="com.example.shopperman.entity.RequesterLocation" >
+        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
+        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, 2)
+    </insert>
+
+</mapper>

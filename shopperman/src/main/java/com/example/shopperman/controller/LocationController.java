@@ -3,13 +3,17 @@ package com.example.shopperman.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shopperman.entity.Location;
 import com.example.shopperman.entity.MarketLocation;
 import com.example.shopperman.entity.RequesterLocation;
+import com.example.shopperman.service.LocationService;
 import com.example.shopperman.util.TspBackTrackingAlgorithm;
 import com.example.shopperman.util.TspGreedyAlgorithm;
 
@@ -17,8 +21,8 @@ import com.example.shopperman.util.TspGreedyAlgorithm;
 @RequestMapping("/location")
 public class LocationController {
 	
-	// @Autowired
-	// private LocationService locationService;
+	@Autowired
+	private LocationService locationService;
 	
 	@GetMapping("/tsp")
     public String tsp() {
@@ -53,33 +57,25 @@ public class LocationController {
     	sa.setAddr("Sa 주소");
     	sa.setMapX("1.0");
     	sa.setMapY("3.0");
-    	ArrayList<String> saList = new ArrayList<>();
-    	saList.add("AAA");
-    	sa.setRequesterNameList(saList);
+    	sa.setRequesterName("AAA");
     	
     	MarketLocation sb = new MarketLocation();
     	sb.setAddr("Sb 주소");
     	sb.setMapX("3.0");
     	sb.setMapY("3.0");
-    	ArrayList<String> sbList = new ArrayList<>();
-    	sbList.add("BBB");
-    	sb.setRequesterNameList(sbList);
+    	sb.setRequesterName("BBB");
     	
     	MarketLocation sc = new MarketLocation();
     	sc.setAddr("Sc 주소");
     	sc.setMapX("2.0");
     	sc.setMapY("5.0");
-    	ArrayList<String> scList = new ArrayList<>();
-    	scList.add("CCC");
-    	sc.setRequesterNameList(scList);
+    	sc.setRequesterName("CCC");
     	
     	MarketLocation sd = new MarketLocation();
     	sd.setAddr("Sd 주소");
     	sd.setMapX("0.0");
     	sd.setMapY("-1.0");
-    	ArrayList<String> sdList = new ArrayList<>();
-    	sdList.add("DDD");
-    	sd.setRequesterNameList(sdList);
+    	sd.setRequesterName("DDD");
     	
     	l.add(a);
     	l.add(b);
@@ -97,6 +93,7 @@ public class LocationController {
     	long endTime1 = System.currentTimeMillis();
     	long duration1 = endTime1 - startTime1;
     	System.out.println("Greedy 알고리즘 => " + duration1 + "밀리초");
+    	System.out.println();
     	
     	// BackTracking 알고리즘
     	long startTime2 = System.currentTimeMillis();
@@ -105,7 +102,62 @@ public class LocationController {
     	long endTime2 = System.currentTimeMillis();
     	long duration2 = endTime2 - startTime2;
     	System.out.println("BackTracking 알고리즘 => " + duration2 + "밀리초");
+    	System.out.println();
     	
     	return "{\\\"result\\\" : \\\"COMPLETE\\\"}";
     }
+	
+	// Location id(숫자)를 이용해서, 위치 가져오기
+	@GetMapping("/get/id")
+	public List<Location> getLocationsById(Integer id) {
+		return locationService.getLocationsById(id);
+	}
+	
+	// 심부름 요청자 이름으로 Location들 찾기
+	@GetMapping("/get/name")
+	public List<Location> getLocationsByRequesterName(String requesterName){
+		return locationService.getLocationsByRequesterName(requesterName);
+	}
+	
+	// 위치 리스트 가져오기
+	@GetMapping("/get/list")
+	public List<Location> getLocationList() {
+		return locationService.getLocationList();
+	}
+	
+	// 새로운 Location 넣기
+	@PostMapping("/set/common")
+	public String setLocation(@RequestBody Location location) {
+	// 파라미터: id, addr, mapX, mapY
+		
+		if(locationService.setLocation(location)) {
+			return "{\\\"result\\\" : \\\"SUCCESS\\\"}";
+		} else {
+			return "{\\\"result\\\" : \\\"FAILURE\\\"}";
+		}
+	}
+	
+	// 새로운 MarketLocation 넣기
+	@PostMapping("/set/market")
+	public String setMarketLocation(@RequestBody MarketLocation marketlocation) {
+	// 파라미터: id, addr, mapX, mapY, requesterName, marketName
+		
+		if(locationService.setMarketLocation(marketlocation)) {
+			return "{\\\"result\\\" : \\\"SUCCESS\\\"}";
+		} else {
+			return "{\\\"result\\\" : \\\"FAILURE\\\"}";
+		}
+	}
+	
+	// 새로운 RequesterLocation 넣기
+	@PostMapping("/set/requester")
+	public String setRequesterLocation(@RequestBody RequesterLocation requesterlocation) {
+	// 파라미터: id, addr, mapX, mapY, requesterName
+		
+		if(locationService.setRequesterLocation(requesterlocation)) {
+			return "{\\\"result\\\" : \\\"SUCCESS\\\"}";
+		} else {
+			return "{\\\"result\\\" : \\\"FAILURE\\\"}";
+		}
+	}
 }

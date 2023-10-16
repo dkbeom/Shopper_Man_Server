@@ -52,21 +52,21 @@ public class MemberController {
         // 로그인 입혁한 정보에 맞는 Member 객체 가져오기
         Member member = memberService.getMemberToLogin(loginForm);
 
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> tokenMap = new LinkedHashMap<>();
         // 로그인할 때, 입력한 정보와 일치하는 Member가 존재할 때
         if (member != null && member.getId() != null && member.getId() != "") {
             // 토큰 발급
             String token = securityService.createToken(member);
             // 토큰 저장
-            map.put("token", token);
+            tokenMap.put("token", token);
         }
         // 로그인할 때, 입력한 정보와 일치하는 Member가 존재하지 않을 때
         else {
-        	map.put("token", null);
+        	tokenMap.put("token", null);
         }
 
         // 토큰 반환
-        return map;
+        return tokenMap;
     }
 
     // 토큰에서 subject 꺼내기

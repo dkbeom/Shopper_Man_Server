@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class RequesterLocation extends Location {
+	// private Integer id;         // 포스팅 번호
 	// private String addr;        // 주소
 	// private String mapX;        // X 좌표
 	// private String mapY;        // Y 좌표
