@@ -1,13 +1,18 @@
 package com.example.shopperman.service;
 
+import java.util.Map;
+
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.shopperman.dao.MemberDao;
 import com.example.shopperman.entity.LoginForm;
 import com.example.shopperman.entity.Member;
 
 @Service("memberService")
+@Transactional
 public class MemberServiceImp implements MemberService {
 
     @Autowired
@@ -73,4 +78,39 @@ public class MemberServiceImp implements MemberService {
 
         return isNicknameDuplicate;
     }
+
+	@Override
+	public Double getRating(String id) {
+		
+		Double rating = 0.0;
+		if(memberDao.getNumScore(id) != 0) {
+			rating = Double.valueOf(memberDao.getSumScore(id).doubleValue()) / memberDao.getNumScore(id);
+		}
+		
+		// 소수점 두번째자리까지 반올림
+		return Math.round(rating * Math.pow(10, 2)) / Math.pow(10, 2);
+	}
+
+	@Override
+	public boolean setScore(String id, Integer score) {
+		
+		// getSumScore
+		Integer sumScore = 0;
+		if(memberDao.getSumScore(id) != null) {
+			sumScore = memberDao.getSumScore(id);
+		}
+		
+		// getNumScore
+		Integer numScore = 0;
+		if(memberDao.getNumScore(id) != null) {
+			numScore = memberDao.getNumScore(id);
+		}
+		
+		Map<String, Object> newScore = new HashedMap<>();
+		newScore.put("id", id);
+		newScore.put("newSumScore", sumScore + score);
+		newScore.put("newNumScore", numScore + 1);
+		
+		return memberDao.setScore(newScore);
+	}
 }

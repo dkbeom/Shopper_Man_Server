@@ -1,5 +1,7 @@
 package com.example.shopperman.dao.mybatis;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -45,4 +47,19 @@ public class MybatisMemberDao implements MemberDao {
     public String getIdByNickname(String nickname) {
         return mapper.getIdByNickname(nickname);
     }
+    
+	@Override
+	public Integer getSumScore(String id) {
+		return mapper.getSumScore(id);
+	}
+
+	@Override
+	public Integer getNumScore(String id) {
+		return mapper.getNumScore(id);
+	}
+
+	@Override
+	public boolean setScore(Map<String, Object> newScore) {
+		return mapper.setScore(newScore);
+	}
 }

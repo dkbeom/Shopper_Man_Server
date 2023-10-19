@@ -104,7 +104,7 @@ public class LocationController {
     	System.out.println("BackTracking 알고리즘 => " + duration2 + "밀리초");
     	System.out.println();
     	
-    	return "{\\\"result\\\" : \\\"COMPLETE\\\"}";
+    	return "{\"result\" : \"COMPLETE\"}";
     }
 	
 	// Location id(숫자)를 이용해서, 위치 가져오기
@@ -131,9 +131,9 @@ public class LocationController {
 	// 파라미터: id, addr, mapX, mapY
 		
 		if(locationService.setLocation(location)) {
-			return "{\\\"result\\\" : \\\"SUCCESS\\\"}";
+			return "{\"result\" : \"SUCCESS\"}";
 		} else {
-			return "{\\\"result\\\" : \\\"FAILURE\\\"}";
+			return "{\"result\" : \"FAILURE\"}";
 		}
 	}
 	
@@ -143,9 +143,9 @@ public class LocationController {
 	// 파라미터: id, addr, mapX, mapY, requesterName, marketName
 		
 		if(locationService.setMarketLocation(marketlocation)) {
-			return "{\\\"result\\\" : \\\"SUCCESS\\\"}";
+			return "{\"result\" : \"SUCCESS\"}";
 		} else {
-			return "{\\\"result\\\" : \\\"FAILURE\\\"}";
+			return "{\"result\" : \"FAILURE\"}";
 		}
 	}
 	
@@ -155,9 +155,9 @@ public class LocationController {
 	// 파라미터: id, addr, mapX, mapY, requesterName
 		
 		if(locationService.setRequesterLocation(requesterlocation)) {
-			return "{\\\"result\\\" : \\\"SUCCESS\\\"}";
+			return "{\"result\" : \"SUCCESS\"}";
 		} else {
-			return "{\\\"result\\\" : \\\"FAILURE\\\"}";
+			return "{\"result\" : \"FAILURE\"}";
 		}
 	}
 }

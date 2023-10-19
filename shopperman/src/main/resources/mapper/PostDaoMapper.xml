@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.shopperman.dao.PostDao">
+
+    <!-- insertPost -->
+    <insert id="insertPost" parameterType="com.example.shopperman.entity.Post" >
+        DECLARE
+        	SEQVALUE NUMBER;
+        BEGIN
+        	SELECT POST_ID_SEQ.NEXTVAL INTO SEQVALUE FROM DUAL;
+        	
+        	INSERT INTO POST
+        	VALUES(SEQVALUE, #{title}, #{item}, #{price}, #{deliveryTip});
+        	
+        	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
+        	VALUES(SEQVALUE, #{requesterLocation.addr}, #{requesterLocation.mapX}, #{requesterLocation.mapY}, #{requesterLocation.requesterName}, 1);
+        	
+        	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, MARKET_NAME, TYPE)
+        	VALUES(SEQVALUE, #{marketLocation.addr}, #{marketLocation.mapX}, #{marketLocation.mapY}, #{marketLocation.requesterName}, #{marketLocation.marketName}, 2);
+        END;
+    </insert>
+    
+    
+
+</mapper>

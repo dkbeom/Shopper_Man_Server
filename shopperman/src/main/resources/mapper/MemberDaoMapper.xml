@@ -6,13 +6,15 @@
 
     <!-- login -->
     <select id="getMemberByLoginForm" resultType="com.example.shopperman.entity.Member" >
-        SELECT * FROM MEMBER
+        SELECT *
+        FROM MEMBER
         WHERE ID = #{id} AND PWD = #{pwd}
     </select>
     
     <!-- getMember -->
     <select id="getMemberById" resultType="com.example.shopperman.entity.Member">
-    	SELECT * FROM MEMBER
+    	SELECT *
+    	FROM MEMBER
     	WHERE ID = #{id}
     </select>
 
@@ -25,14 +27,39 @@
 
     <!-- checkIdDuplicate -->
     <select id="getIdById" resultType="String" >
-        SELECT ID FROM MEMBER
+        SELECT ID
+        FROM MEMBER
         WHERE ID = #{id}
     </select>
 
     <!-- checkNicknameDuplicate -->
     <select id="getIdByNickname" resultType="String" >
-        SELECT ID FROM MEMBER
+        SELECT ID
+        FROM MEMBER
         WHERE NICKNAME = #{nickname}
     </select>
+    
+    <!-- getSumScore -->
+    <select id="getSumScore" resultType="Integer">
+    	SELECT SUMSCORE
+    	FROM MEMBER
+    	WHERE ID = #{id}
+    </select>
+    
+    <!-- getNumScore -->
+    <select id="getNumScore" resultType="Integer">
+    	SELECT NUMSCORE
+    	FROM MEMBER
+    	WHERE ID = #{id}
+    </select>
+    
+    <!-- setScore -->
+    <update id="setScore">
+    	UPDATE MEMBER
+    	SET
+    		SUMSCORE = #{newSumScore},
+    		NUMSCORE = #{newNumScore}
+    	WHERE ID = #{id}
+    </update>
 
 </mapper>

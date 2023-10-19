@@ -103,4 +103,22 @@ public class MemberController {
             return "{\"result\" : \"NOT_DUPLICATE_NICKNAME\"}";
         }
     }
+    
+    @GetMapping("/get/rating")
+    public String getRating(String id) {
+    	
+    	Double rating = memberService.getRating(id);
+    	
+    	return "{\"rating\" : \""+rating+"\"}";
+    }
+    
+    @GetMapping("/set/score")
+    public String setScore(String id, Integer score) {
+    	
+    	if(memberService.setScore(id, score)) {
+    		return "{\"result\" : \"SUCCESS\"}";
+    	} else {
+    		return "{\"result\" : \"FAILURE\"}";
+    	}
+    }
 }

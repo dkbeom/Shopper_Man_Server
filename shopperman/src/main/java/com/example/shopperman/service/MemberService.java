@@ -19,4 +19,10 @@ public interface MemberService {
 
     // 닉네임 중복체크
     boolean checkNicknameDuplicate(String nickname);
+    
+    // 평점 가져오기
+    Double getRating(String id);
+    
+    // 평점 매기기
+    boolean setScore(String id, Integer score);
 }

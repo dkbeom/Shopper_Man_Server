@@ -27,16 +27,16 @@
         VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, 0)
     </insert>
     
+    <!-- setRequesterLocation -->
+    <insert id="setRequesterLocation" parameterType="com.example.shopperman.entity.RequesterLocation" >
+        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
+        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, 1)
+    </insert>
+    
     <!-- setMarketLocation -->
     <insert id="setMarketLocation" parameterType="com.example.shopperman.entity.MarketLocation">
         INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, MARKET_NAME, TYPE)
-        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, #{marketName}, 1)
-    </insert>
-    
-    <!-- setLocation -->
-    <insert id="setRequesterLocation" parameterType="com.example.shopperman.entity.RequesterLocation" >
-        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
-        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, 2)
+        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, #{marketName}, 2)
     </insert>
 
 </mapper>
