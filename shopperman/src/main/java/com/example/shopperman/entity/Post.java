@@ -11,4 +11,5 @@ public class Post {
 	private Integer deliveryTip;                 // 배달팁
 	private RequesterLocation requesterLocation; // 심부름 요청자의 위치
 	private MarketLocation marketLocation;       // 가게 위치
+	private String regdate;                      // 게시물 등록 시간
 }

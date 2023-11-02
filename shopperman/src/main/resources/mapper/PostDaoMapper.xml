@@ -11,7 +11,7 @@
         BEGIN
         	SELECT POST_ID_SEQ.NEXTVAL INTO SEQVALUE FROM DUAL;
         	
-        	INSERT INTO POST
+        	INSERT INTO POST(ID, TITLE, ITEM, PRICE, DELIVERY_TIP)
         	VALUES(SEQVALUE, #{title}, #{item}, #{price}, #{deliveryTip});
         	
         	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
