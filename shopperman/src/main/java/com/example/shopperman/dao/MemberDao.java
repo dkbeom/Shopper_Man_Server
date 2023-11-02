@@ -1,5 +1,6 @@
 package com.example.shopperman.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.example.shopperman.entity.LoginForm;
@@ -10,6 +11,8 @@ public interface MemberDao {
     Member getMemberByLoginForm(LoginForm loginForm);
     
     Member getMemberById(String id);
+    
+    List<Member> getMemberList();
 
     boolean insertMember(Member member);
 

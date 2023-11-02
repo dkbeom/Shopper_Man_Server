@@ -1,5 +1,6 @@
 package com.example.shopperman.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
@@ -26,6 +27,11 @@ public class MemberServiceImp implements MemberService {
     @Override
 	public Member getMemberById(String id) {
     	return memberDao.getMemberById(id);
+	}
+    
+    @Override
+	public List<Member> getMemberList() {
+		return memberDao.getMemberList();
 	}
 
     @Override

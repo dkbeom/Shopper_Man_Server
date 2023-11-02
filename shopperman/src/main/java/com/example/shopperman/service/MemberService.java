@@ -1,5 +1,7 @@
 package com.example.shopperman.service;
 
+import java.util.List;
+
 import com.example.shopperman.entity.LoginForm;
 import com.example.shopperman.entity.Member;
 
@@ -10,6 +12,9 @@ public interface MemberService {
     
     // id로 Member 객체 가져오기
     Member getMemberById(String id);
+    
+    // Member List 가져오기
+    List<Member> getMemberList();
 
     // 회원가입
     int join(Member member);

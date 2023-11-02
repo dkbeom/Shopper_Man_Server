@@ -17,6 +17,12 @@
     	FROM MEMBER
     	WHERE ID = #{id}
     </select>
+    
+    <!-- getMemberList -->
+    <select id="getMemberList" resultType="com.example.shopperman.entity.Member">
+    	SELECT *
+    	FROM MEMBER
+    </select>
 
     <!-- join -->
     <insert id="insertMember" parameterType="com.example.shopperman.entity.Member" >
