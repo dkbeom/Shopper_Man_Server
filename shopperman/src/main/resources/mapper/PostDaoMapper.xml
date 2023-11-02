@@ -22,6 +22,20 @@
         END;
     </insert>
     
+    <select id="getPost" resultType="com.example.shopperman.entity.Post">
+    	SELECT *
+    	FROM POST
+    	WHERE ID = #{id}
+    </select>
     
+    <select id="getPostList" resultType="com.example.shopperman.entity.Post">
+    	SELECT *
+    	FROM POST
+    </select>
+    
+    <delete id="deletePost">
+    	DELETE POST
+    	WHERE ID = #{id}
+    </delete>
 
 </mapper>

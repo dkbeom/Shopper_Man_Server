@@ -1,5 +1,7 @@
 package com.example.shopperman.dao.mybatis;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -26,4 +28,18 @@ private PostDao mapper;
 		mapper.insertPost(post);
 	}
 
+	@Override
+	public Post getPost(Integer id) {
+		return mapper.getPost(id);
+	}
+	
+	@Override
+	public List<Post> getPostList() {
+		return mapper.getPostList();
+	}
+
+	@Override
+	public boolean deletePost(Integer id) {
+		return mapper.deletePost(id);
+	}
 }

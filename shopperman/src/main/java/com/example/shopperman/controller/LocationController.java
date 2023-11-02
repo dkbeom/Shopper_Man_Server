@@ -53,6 +53,33 @@ public class LocationController {
     	d.setMapY("5.0");
     	d.setRequesterName("DDD");
     	
+    	RequesterLocation e = new RequesterLocation();
+    	e.setAddr("e 주소");
+    	e.setMapX("2.0");
+    	e.setMapY("-1.0");
+    	e.setRequesterName("EEE");
+    	
+    	RequesterLocation f = new RequesterLocation();
+    	f.setAddr("f 주소");
+    	f.setMapX("3.0");
+    	f.setMapY("0.0");
+    	f.setRequesterName("FFF");
+    	
+    	RequesterLocation g = new RequesterLocation();
+    	g.setAddr("g 주소");
+    	g.setMapX("-1.0");
+    	g.setMapY("4.0");
+    	g.setRequesterName("GGG");
+    	
+    	RequesterLocation h = new RequesterLocation();
+    	h.setAddr("h 주소");
+    	h.setMapX("0.0");
+    	h.setMapY("1.0");
+    	h.setRequesterName("HHH");
+    	
+    	
+    	
+    	
     	MarketLocation sa = new MarketLocation();
     	sa.setAddr("Sa 주소");
     	sa.setMapX("1.0");
@@ -77,14 +104,49 @@ public class LocationController {
     	sd.setMapY("-1.0");
     	sd.setRequesterName("DDD");
     	
+    	MarketLocation se = new MarketLocation();
+    	se.setAddr("Se 주소");
+    	se.setMapX("5.0");
+    	se.setMapY("5.0");
+    	se.setRequesterName("EEE");
+    	
+    	MarketLocation sf = new MarketLocation();
+    	sf.setAddr("Sf 주소");
+    	sf.setMapX("-2.0");
+    	sf.setMapY("0.0");
+    	sf.setRequesterName("FFF");
+    	
+    	MarketLocation sg = new MarketLocation();
+    	sg.setAddr("Sg 주소");
+    	sg.setMapX("5.0");
+    	sg.setMapY("0.0");
+    	sg.setRequesterName("GGG");
+    	
+    	MarketLocation sh = new MarketLocation();
+    	sh.setAddr("Sh 주소");
+    	sh.setMapX("0.0");
+    	sh.setMapY("2.0");
+    	sh.setRequesterName("HHH");
+    	
+    	
     	l.add(a);
     	l.add(b);
     	l.add(c);
     	l.add(d);
+    	l.add(e);
+    	l.add(f);
+//    	l.add(g);
+//    	l.add(h);
+    	
     	l.add(sa);
     	l.add(sb);
     	l.add(sc);
     	l.add(sd);
+    	l.add(se);
+    	l.add(sf);
+//    	l.add(sg);
+//    	l.add(sh);
+    	
     	
     	// Greedy 알고리즘
         long startTime1 = System.currentTimeMillis();

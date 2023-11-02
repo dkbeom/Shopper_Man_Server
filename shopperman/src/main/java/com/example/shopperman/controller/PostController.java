@@ -1,6 +1,9 @@
 package com.example.shopperman.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +29,22 @@ public class PostController {
 		return "{\"result\" : \"COMPLETE\"}";
 	}
 	
+	@GetMapping("/get")
+	public Post getPost(Integer id){
+		return postService.getPost(id);
+	}
 	
+	@GetMapping("/get/list")
+	public List<Post> getPostList(){
+		return postService.getPostList();
+	}
+	
+	@GetMapping("/delete")
+	public String deletePost(Integer id) {
+		if(postService.deletePost(id)) {
+			return "{\"result\" : \"COMPLETE\"}";
+		} else {
+			return "{\"result\" : \"FAILURE\"}";
+		}
+	}
 }

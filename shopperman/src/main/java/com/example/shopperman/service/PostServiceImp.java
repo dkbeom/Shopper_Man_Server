@@ -1,5 +1,7 @@
 package com.example.shopperman.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,4 +21,18 @@ public class PostServiceImp implements PostService {
 		postDao.insertPost(post);
 	}
 
+	@Override
+	public Post getPost(Integer id) {
+		return postDao.getPost(id);
+	}
+	
+	@Override
+	public List<Post> getPostList() {
+		return postDao.getPostList();
+	}
+
+	@Override
+	public boolean deletePost(Integer id) {
+		return postDao.deletePost(id);
+	}
 }
