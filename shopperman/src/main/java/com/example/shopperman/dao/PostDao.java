@@ -17,4 +17,7 @@ public interface PostDao {
 
 	// 게시물 삭제
 	boolean deletePost(Integer id);
+
+	// 게시자 찾기
+	String getPublisherNicknameByPostId(Integer id);
 }

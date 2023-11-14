@@ -35,4 +35,9 @@ public class PostServiceImp implements PostService {
 	public boolean deletePost(Integer id) {
 		return postDao.deletePost(id);
 	}
+
+	@Override
+	public String getPublisherNicknameByPostId(Integer id) {
+		return postDao.getPublisherNicknameByPostId(id);
+	}
 }

@@ -17,4 +17,7 @@ public interface PostService {
 	
 	// 특정 게시물 삭제
 	boolean deletePost(Integer id);
+
+	// 게시물 게시자 찾기
+	String getPublisherNicknameByPostId(Integer id);
 }

@@ -11,8 +11,8 @@
         BEGIN
         	SELECT POST_ID_SEQ.NEXTVAL INTO SEQVALUE FROM DUAL;
         	
-        	INSERT INTO POST(ID, TITLE, ITEM, PRICE, DELIVERY_TIP)
-        	VALUES(SEQVALUE, #{title}, #{item}, #{price}, #{deliveryTip});
+        	INSERT INTO POST(ID, PUBLISHER_NICKNAME, TITLE, ITEM, PRICE, DELIVERY_TIP)
+        	VALUES(SEQVALUE, #{publisherNickname}, #{title}, #{item}, #{price}, #{deliveryTip});
         	
         	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
         	VALUES(SEQVALUE, #{requesterLocation.addr}, #{requesterLocation.mapX}, #{requesterLocation.mapY}, #{requesterLocation.requesterName}, 1);
@@ -37,5 +37,11 @@
     	DELETE POST
     	WHERE ID = #{id}
     </delete>
+    
+    <select id="getPublisherNicknameByPostId" resultType="String">
+    	SELECT PUBLISHER_NICKNAME
+    	FROM POST
+    	WHERE ID = #{id}
+    </select>
 
 </mapper>

@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class Post {
 	private Integer id;                          // 시퀀스 번호
+	private String publisherNickname;            // 게시물 게시자 닉네임
 	private String title;                        // 제목
 	private String item;                         // 심부름 받을 물건
 	private Integer price;                       // 물건 가격

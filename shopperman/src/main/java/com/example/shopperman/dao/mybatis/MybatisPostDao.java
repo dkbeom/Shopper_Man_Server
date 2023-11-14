@@ -14,7 +14,7 @@ import com.example.shopperman.entity.Post;
 @Transactional
 public class MybatisPostDao implements PostDao {
 
-private PostDao mapper;
+	private PostDao mapper;
 	
 	@Autowired
     public MybatisPostDao(SqlSession sqlSession) {
@@ -41,5 +41,10 @@ private PostDao mapper;
 	@Override
 	public boolean deletePost(Integer id) {
 		return mapper.deletePost(id);
+	}
+
+	@Override
+	public String getPublisherNicknameByPostId(Integer id) {
+		return mapper.getPublisherNicknameByPostId(id);
 	}
 }
