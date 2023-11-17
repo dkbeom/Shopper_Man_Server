@@ -29,13 +29,13 @@ public class MybatisPostDao implements PostDao {
 	}
 
 	@Override
-	public Post getPost(Integer id) {
-		return mapper.getPost(id);
+	public List<Post> getPostList() {
+		return mapper.getPostList();
 	}
 	
 	@Override
-	public List<Post> getPostList() {
-		return mapper.getPostList();
+	public Post getPost(Integer id) {
+		return mapper.getPost(id);
 	}
 
 	@Override

@@ -26,18 +26,33 @@ public class MybatisLocationDao implements LocationDao {
 	// ---------------------------------------------------------------------------------
 	
 	@Override
-	public List<Location> getLocationsById(Integer id) {
-		return mapper.getLocationsById(id);
+	public List<RequesterLocation> getRequesterLocationList() {
+		return mapper.getRequesterLocationList();
+	}
+	
+	@Override
+	public List<MarketLocation> getMarketLocationList() {
+		return mapper.getMarketLocationList();
+	}
+	
+	@Override
+	public RequesterLocation getRequesterLocationById(Integer id) {
+		return mapper.getRequesterLocationById(id);
+	}
+	
+	@Override
+	public MarketLocation getMarketLocationById(Integer id) {
+		return mapper.getMarketLocationById(id);
 	}
 
 	@Override
-	public List<Location> getLocationsByRequesterName(String requesterName) {
-		return mapper.getLocationsByRequesterName(requesterName);
+	public List<RequesterLocation> getRequesterLocationListByRequesterName(String requesterName) {
+		return mapper.getRequesterLocationListByRequesterName(requesterName);
 	}
-
+	
 	@Override
-	public List<Location> getLocationList() {
-		return mapper.getLocationList();
+	public List<MarketLocation> getMarketLocationListByRequesterName(String requesterName) {
+		return mapper.getMarketLocationListByRequesterName(requesterName);
 	}
 
 	@Override
@@ -46,12 +61,17 @@ public class MybatisLocationDao implements LocationDao {
 	}
 
 	@Override
-	public boolean setMarketLocation(MarketLocation marketLocation) {
-		return mapper.setMarketLocation(marketLocation);
+	public boolean deleteLocations(Integer id) {
+		return mapper.deleteLocations(id);
 	}
 	
 	@Override
-	public boolean setRequesterLocation(RequesterLocation requesterLocation) {
-		return mapper.setRequesterLocation(requesterLocation);
+	public List<Integer> getIdList() {
+		return mapper.getIdList();
+	}
+	
+	@Override
+	public List<Integer> getIdListByRequesterName(String requesterName) {
+		return mapper.getIdListByRequesterName(requesterName);
 	}
 }

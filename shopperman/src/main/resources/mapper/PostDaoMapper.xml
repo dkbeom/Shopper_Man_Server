@@ -22,13 +22,18 @@
         END;
     </insert>
     
-    <select id="getPost" resultType="com.example.shopperman.entity.Post">
+    <resultMap id="postResultMap" type="com.example.shopperman.entity.Post">
+    	<result property="publisherNickname" column="PUBLISHER_NICKNAME" />
+    	<result property="deliveryTip" column="DELIVERY_TIP" />
+    </resultMap>
+    
+    <select id="getPost" resultMap="postResultMap">
     	SELECT *
     	FROM POST
     	WHERE ID = #{id}
     </select>
     
-    <select id="getPostList" resultType="com.example.shopperman.entity.Post">
+    <select id="getPostList" resultMap="postResultMap">
     	SELECT *
     	FROM POST
     </select>

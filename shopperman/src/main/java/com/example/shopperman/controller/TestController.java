@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.shopperman.entity.Location;
+import com.example.shopperman.entity.LocationContainer;
 import com.example.shopperman.entity.Member;
 import com.example.shopperman.entity.Post;
 import com.example.shopperman.service.LocationService;
@@ -28,8 +28,8 @@ public class TestController {
 	PostService postService;
 	
 	@GetMapping("/location")
-	public List<Location> getLocationList(){
-		return locationService.getLocationList();
+	public List<LocationContainer> getLocationList(){
+		return locationService.getLocationsList();
 	}
 	
 	@GetMapping("/member")

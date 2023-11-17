@@ -4,39 +4,78 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.shopperman.dao.LocationDao">
 
-    <!-- getLocationById -->
-    <select id="getLocationsById" resultType="com.example.shopperman.entity.Location" >
-        SELECT * FROM LOCATION
-        WHERE ID = #{id}
+	<resultMap id="RequesterLocationMap" type="com.example.shopperman.entity.RequesterLocation">
+		<result property="requesterName" column="REQUESTER_NAME" />
+	</resultMap>
+
+	<resultMap id="MarketLocationMap" type="com.example.shopperman.entity.MarketLocation">
+		<result property="marketName" column="MARKET_NAME" />
+		<result property="requesterName" column="REQUESTER_NAME" />
+	</resultMap>
+
+    <!-- getRequesterLocationList -->
+    <select id="getRequesterLocationList" resultMap="RequesterLocationMap" >
+        SELECT *
+        FROM LOCATION
+        WHERE TYPE = 1
     </select>
     
-    <!-- getLocationsByRequesterName -->
-    <select id="getLocationsByRequesterName" resultType="com.example.shopperman.entity.Location">
-    	SELECT * FROM LOCATION
-    	WHERE REQUESTER_NAME = #{requesterName}
+    <!-- getMarketLocationList -->
+    <select id="getMarketLocationList" resultMap="MarketLocationMap" >
+        SELECT *
+        FROM LOCATION
+        WHERE TYPE = 2
     </select>
 
-    <!-- getLocationList -->
-    <select id="getLocationList" resultType="com.example.shopperman.entity.Location" >
+    <!-- getRequesterLocationById -->
+    <select id="getRequesterLocationById" resultMap="RequesterLocationMap" >
         SELECT * FROM LOCATION
+        WHERE ID = #{id} AND TYPE = 1
+    </select>
+    
+    <!-- getMarketLocationById -->
+    <select id="getMarketLocationById" resultMap="MarketLocationMap" >
+        SELECT * FROM LOCATION
+        WHERE ID = #{id} AND TYPE = 2
+    </select>
+    
+    <!-- getRequesterLocationListByRequesterName -->
+    <select id="getRequesterLocationListByRequesterName" resultMap="RequesterLocationMap">
+    	SELECT * FROM LOCATION
+    	WHERE REQUESTER_NAME = #{requesterName} AND TYPE = 1
+    </select>
+    
+    <!-- getMarketLocationListByRequesterName -->
+    <select id="getMarketLocationListByRequesterName" resultMap="MarketLocationMap">
+    	SELECT * FROM LOCATION
+    	WHERE REQUESTER_NAME = #{requesterName} AND TYPE = 2
     </select>
 
     <!-- setLocation -->
     <insert id="setLocation" parameterType="com.example.shopperman.entity.Location" >
         INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, TYPE)
-        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, 0)
+        VALUES(POST_ID_SEQ.NEXTVAL, #{addr}, #{mapX}, #{mapY}, 0)
     </insert>
     
-    <!-- setRequesterLocation -->
-    <insert id="setRequesterLocation" parameterType="com.example.shopperman.entity.RequesterLocation" >
-        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
-        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, 1)
-    </insert>
+    <!-- deleteLocations -->
+    <delete id="deleteLocations">
+    	DELETE LOCATION
+    	WHERE ID = #{id}
+    </delete>
     
-    <!-- setMarketLocation -->
-    <insert id="setMarketLocation" parameterType="com.example.shopperman.entity.MarketLocation">
-        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, MARKET_NAME, TYPE)
-        VALUES(#{id}, #{addr}, #{mapX}, #{mapY}, #{requesterName}, #{marketName}, 2)
-    </insert>
+    <!-- getIdList -->
+    <select id="getIdList" resultType="Integer">
+    	SELECT DISTINCT ID
+    	FROM LOCATION
+    	ORDER BY ID ASC
+    </select>
+    
+    <!-- getIdListByRequesterName -->
+	<select id="getIdListByRequesterName" resultType="Integer">
+		SELECT DISTINCT ID
+		FROM LOCATION
+		WHERE REQUESTER_NAME = #{requesterName}
+		ORDER BY ID ASC
+	</select>
 
 </mapper>

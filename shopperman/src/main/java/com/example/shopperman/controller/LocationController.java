@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.shopperman.entity.Location;
+import com.example.shopperman.entity.LocationContainer;
 import com.example.shopperman.entity.MarketLocation;
 import com.example.shopperman.entity.RequesterLocation;
 import com.example.shopperman.service.LocationService;
@@ -151,7 +152,7 @@ public class LocationController {
     	// Greedy 알고리즘
         long startTime1 = System.currentTimeMillis();
     	TspGreedyAlgorithm tsp1 = new TspGreedyAlgorithm(l);
-    	List<Location> hello1 = tsp1.getTspOrderedLocationList("0.0", "0.0");
+    	tsp1.getTspOrderedLocationList("0.0", "0.0");
     	long endTime1 = System.currentTimeMillis();
     	long duration1 = endTime1 - startTime1;
     	System.out.println("Greedy 알고리즘 => " + duration1 + "밀리초");
@@ -160,7 +161,7 @@ public class LocationController {
     	// BackTracking 알고리즘
     	long startTime2 = System.currentTimeMillis();
     	TspBackTrackingAlgorithm tsp2 = new TspBackTrackingAlgorithm(l);
-    	List<Location> hello2 = tsp2.getTspOrderedLocationList("0.0", "0.0");
+    	tsp2.getTspOrderedLocationList("0.0", "0.0");
     	long endTime2 = System.currentTimeMillis();
     	long duration2 = endTime2 - startTime2;
     	System.out.println("BackTracking 알고리즘 => " + duration2 + "밀리초");
@@ -169,54 +170,30 @@ public class LocationController {
     	return "{\"result\" : \"COMPLETE\"}";
     }
 	
-	// Location id(숫자)를 이용해서, 위치 가져오기
-	@GetMapping("/get/id")
-	public List<Location> getLocationsById(Integer id) {
+	// Location 리스트 가져오기
+	@GetMapping("/get/list")
+	public List<LocationContainer> getLocationsList() {
+		return locationService.getLocationsList();
+	}
+	
+	// Location id(숫자)를 이용해서, Location 가져오기
+	@GetMapping("/getById")
+	public LocationContainer getLocationsById(Integer id) {
 		return locationService.getLocationsById(id);
 	}
 	
-	// 심부름 요청자 이름으로 Location들 찾기
-	@GetMapping("/get/name")
-	public List<Location> getLocationsByRequesterName(String requesterName){
-		return locationService.getLocationsByRequesterName(requesterName);
-	}
-	
-	// 위치 리스트 가져오기
-	@GetMapping("/get/list")
-	public List<Location> getLocationList() {
-		return locationService.getLocationList();
+	// 심부름 요청자 이름으로 Location 리스트 찾기
+	@GetMapping("/getByName/list")
+	public List<LocationContainer> getLocationsByRequesterName(String requesterName){
+		return locationService.getLocationsListByRequesterName(requesterName);
 	}
 	
 	// 새로운 Location 넣기
 	@PostMapping("/set/common")
 	public String setLocation(@RequestBody Location location) {
-	// 파라미터: id, addr, mapX, mapY
+	// 파라미터: addr, mapX, mapY
 		
 		if(locationService.setLocation(location)) {
-			return "{\"result\" : \"SUCCESS\"}";
-		} else {
-			return "{\"result\" : \"FAILURE\"}";
-		}
-	}
-	
-	// 새로운 MarketLocation 넣기
-	@PostMapping("/set/market")
-	public String setMarketLocation(@RequestBody MarketLocation marketlocation) {
-	// 파라미터: id, addr, mapX, mapY, requesterName, marketName
-		
-		if(locationService.setMarketLocation(marketlocation)) {
-			return "{\"result\" : \"SUCCESS\"}";
-		} else {
-			return "{\"result\" : \"FAILURE\"}";
-		}
-	}
-	
-	// 새로운 RequesterLocation 넣기
-	@PostMapping("/set/requester")
-	public String setRequesterLocation(@RequestBody RequesterLocation requesterlocation) {
-	// 파라미터: id, addr, mapX, mapY, requesterName
-		
-		if(locationService.setRequesterLocation(requesterlocation)) {
 			return "{\"result\" : \"SUCCESS\"}";
 		} else {
 			return "{\"result\" : \"FAILURE\"}";

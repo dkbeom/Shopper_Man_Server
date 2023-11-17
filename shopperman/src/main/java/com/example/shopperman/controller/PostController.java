@@ -26,13 +26,22 @@ public class PostController {
 	
 	@PostMapping("/create")
 	public String createPost(@RequestHeader(value = "Authorization") String token, @RequestBody Post post) {
-	// 파라미터: title, item, price, deliveryTip, requesterLocation(RequesterLocation 객체), marketLocation(MarketLocation 객체)
+	// 파라미터: title, item, price, requesterLocation(addr, mapX, mapY), marketLocation(addr, mapX, mapY, marketName)
 		
 		String currentUserNickname = securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}
 		post.setPublisherNickname(currentUserNickname);
+		post.getRequesterLocation().setRequesterName(currentUserNickname);
+		post.getMarketLocation().setRequesterName(currentUserNickname);
+		
+		// 배달팁 계산
+		Integer deliveryTip = postService.calculateDeliveryTip(post.getRequesterLocation(), post.getMarketLocation());
+		if(deliveryTip == null) {
+			return "{\"result\" : \"FAILURE\"}";
+		}
+		post.setDeliveryTip(deliveryTip);
 		
 		postService.createPost(post);
 		

@@ -1,6 +1,8 @@
 package com.example.shopperman.util;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class TspBackTrackingAlgorithm {
 				BigDecimal y2 = y.multiply(y);
 
 				BigDecimal distance = x2.add(y2);
-
+				
 				// x2 + y2 의 값을 입력
 				distances[i][j] = distance.doubleValue();
 			}
