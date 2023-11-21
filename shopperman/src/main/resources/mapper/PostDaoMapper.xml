@@ -36,6 +36,7 @@
     <select id="getPostList" resultMap="postResultMap">
     	SELECT *
     	FROM POST
+    	ORDER BY REGDATE DESC
     </select>
     
     <delete id="deletePost">

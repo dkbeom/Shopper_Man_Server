@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.shopperman.entity.Location;
 import com.example.shopperman.entity.LocationContainer;
 import com.example.shopperman.entity.Member;
 import com.example.shopperman.entity.Post;
@@ -37,8 +40,8 @@ public class TestController {
 		return memberService.getMemberList();
 	}
 	
-	@GetMapping("/post")
-	public List<Post> getPostList(){
-		return postService.getPostList();
+	@PostMapping("/post")
+	public List<Post> getPostList(@RequestBody Location location){
+		return postService.getPostList(location);
 	}
 }

@@ -1,8 +1,6 @@
 package com.example.shopperman.service;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.shopperman.dao.LocationDao;
 import com.example.shopperman.dao.PostDao;
+import com.example.shopperman.entity.Location;
 import com.example.shopperman.entity.MarketLocation;
 import com.example.shopperman.entity.Post;
 import com.example.shopperman.entity.RequesterLocation;
@@ -25,6 +24,9 @@ public class PostServiceImp implements PostService {
 	@Autowired
 	private LocationDao locationDao;
 	
+	@Autowired
+	private LocationService locationService;
+	
 	// ---------------------------------------------------------------------------------
 
 	@Override
@@ -33,25 +35,75 @@ public class PostServiceImp implements PostService {
 	}
 	
 	@Override
-	public List<Post> getPostList() {
+	public List<Post> getPostList(Location location) {
 		
-		List<Post> postList = postDao.getPostList();
+		// 모든 게시물을 최근 순으로 나열
+		List<Post> allPostList = postDao.getPostList();
 		
-		for(Post post : postList) {
-			post.setRequesterLocation(locationDao.getRequesterLocationById(post.getId()));
-			post.setMarketLocation(locationDao.getMarketLocationById(post.getId()));
+		List<Post> postList = new ArrayList<>();
+		for(Post post : allPostList) {
+			
+			// 게시물이 10개가 넘어가면, 10개까지만 반환
+			if(postList.size() >= 10) {
+				return postList;
+			}
+			
+			RequesterLocation requesterLocation = locationDao.getRequesterLocationById(post.getId());
+			MarketLocation marketLocation = locationDao.getMarketLocationById(post.getId());
+			
+			Integer deliveryToRequesterDistance = null;
+			if(requesterLocation != null) {
+				// 배달하는 사람과 배달받을 사람 사이의 거리(미터)
+				deliveryToRequesterDistance = locationService.calculateDistance(location, requesterLocation);
+			}
+			Integer deliveryToMarketDistance = null;
+			if(marketLocation != null) {
+				// 배달하는 사람과 가게 사이의 거리(미터)
+				deliveryToMarketDistance = locationService.calculateDistance(location, marketLocation);
+			}
+			
+			// 거리 제한?
+			// deliveryToRequesterDistance
+			// deliveryToMarketDistance
+			
+			post.setRequesterLocation(requesterLocation);
+			post.setMarketLocation(marketLocation);
+			post.setDeliveryToRequesterDistance(deliveryToRequesterDistance);
+			post.setDeliveryToMarketDistance(deliveryToMarketDistance);
+			
+			postList.add(post);
 		}
 		
 		return postList;
 	}
 
 	@Override
-	public Post getPost(Integer id) {
+	public Post getPost(Location location, Integer id) {
 		
 		Post post = postDao.getPost(id);
 		
+		if(post == null) {
+			return null;
+		}
+		
+		RequesterLocation requesterLocation = locationDao.getRequesterLocationById(post.getId());
+		MarketLocation marketLocation = locationDao.getMarketLocationById(post.getId());
+		
+		Integer deliveryToRequesterDistance = null;
+		if(requesterLocation != null) {
+			// 배달하는 사람과 배달받을 사람 사이의 거리(미터) 삽입
+			deliveryToRequesterDistance = locationService.calculateDistance(location, requesterLocation);
+		}
+		Integer deliveryToMarketDistance = null;
+		if(marketLocation != null) {
+			// 배달하는 사람과 가게 사이의 거리(미터)
+			deliveryToMarketDistance = locationService.calculateDistance(location, marketLocation);
+		}
+		
 		post.setRequesterLocation(locationDao.getRequesterLocationById(id));
 		post.setMarketLocation(locationDao.getMarketLocationById(id));
+		post.setDeliveryToRequesterDistance(deliveryToRequesterDistance);
+		post.setDeliveryToMarketDistance(deliveryToMarketDistance);
 		
 		return post;
 	}
@@ -69,26 +121,10 @@ public class PostServiceImp implements PostService {
 	}
 
 	@Override
-	public Integer calculateDeliveryTip(RequesterLocation requesterLocation, MarketLocation marketLocation) {
-		
-		BigDecimal requesterLocationDecimalX = new BigDecimal(requesterLocation.getMapX());
-		BigDecimal marketLocationDecimalX = new BigDecimal(marketLocation.getMapX());
-		
-		BigDecimal requesterLocationDecimalY = new BigDecimal(requesterLocation.getMapY());
-		BigDecimal marketLocationDecimalY = new BigDecimal(marketLocation.getMapY());
-		
-		BigDecimal x = requesterLocationDecimalX.subtract(marketLocationDecimalX).multiply(new BigDecimal(88));
-    	BigDecimal y = requesterLocationDecimalY.subtract(marketLocationDecimalY).multiply(new BigDecimal(111));
-    	BigDecimal x2 = x.pow(2);
-    	BigDecimal y2 = y.pow(2);
-    	MathContext mc = new MathContext(10, RoundingMode.HALF_UP);
-    	BigDecimal distance = x2.add(y2).sqrt(mc);
+	public Integer calculateDeliveryTip(Integer distance) {
     	
-    	// 거리에 따른 배달비 계산 (미터 단위)
-    	Double distanceMeter = distance.doubleValue() * 1000;
-    	
-    	// 100m 당 100 포인트
-    	Integer deliveryTip = (int)Math.round(distanceMeter / 100) * 100;
+    	// 1000m 당 3000 포인트
+    	Integer deliveryTip = (int)Math.round((double)distance / 1000) * 3000;
 		
 		return deliveryTip;
 	}

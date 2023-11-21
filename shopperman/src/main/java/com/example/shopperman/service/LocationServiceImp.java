@@ -1,5 +1,8 @@
 package com.example.shopperman.service;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,5 +89,26 @@ public class LocationServiceImp implements LocationService {
 	@Override
 	public boolean setLocation(Location location) {
 		return locationDao.setLocation(location);
+	}
+	
+	@Override
+	public Integer calculateDistance(Location locationA, Location locationB) {
+		
+		BigDecimal locationADecimalX = new BigDecimal(locationA.getMapX());
+		BigDecimal locationBDecimalX = new BigDecimal(locationB.getMapX());
+		
+		BigDecimal locationADecimalY = new BigDecimal(locationA.getMapY());
+		BigDecimal locationBDecimalY = new BigDecimal(locationB.getMapY());
+		
+		BigDecimal x = locationADecimalX.subtract(locationBDecimalX).multiply(new BigDecimal(88));
+    	BigDecimal y = locationADecimalY.subtract(locationBDecimalY).multiply(new BigDecimal(111));
+    	BigDecimal x2 = x.pow(2);
+    	BigDecimal y2 = y.pow(2);
+    	MathContext mc = new MathContext(10, RoundingMode.HALF_UP);
+    	BigDecimal distanceDecimal = x2.add(y2).sqrt(mc);
+    	
+    	Integer distance = (int)(distanceDecimal.doubleValue() * 1000);
+		
+		return distance;
 	}
 }
