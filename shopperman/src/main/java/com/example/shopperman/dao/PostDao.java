@@ -1,23 +1,45 @@
 package com.example.shopperman.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.shopperman.entity.Post;
 
 public interface PostDao {
 
-	// 게시물 등록
+	// 게시글 등록
 	void insertPost(Post post);
 
-	// 게시물 리스트 가져오기
+	// 게시글 리스트 가져오기
 	List<Post> getPostList();
 	
-	// 특정 게시물 가져오기
+	// 각각의 게시글 id에 대응하는 모든 게시글 가져오기
+	List<Post> getPostListByIdList(List<Integer> idList);
+	
+	// 특정 게시글 가져오기
 	Post getPost(Integer id);
 
-	// 게시물 삭제
+	// 게시글 삭제
 	boolean deletePost(Integer id);
 
 	// 게시자 찾기
 	String getPublisherNicknameByPostId(Integer id);
+
+	// 게시글에 배달원 닉네임 적기
+	boolean setDeliverymanNickname(Map<String, Object> idAndDeliverymanNickname);
+	
+	// 게시글의 배달원 닉네임 가져오기
+	String getDeliverymanNickname(Integer id);
+	
+	// state 조회
+	Integer getState(Integer id);
+	
+	// state 바꾸기
+	boolean setState(Map<String, Integer> idAndState);
+
+	// price 조회
+	Integer getPrice(Integer id);
+
+	// deliveryTip 조회
+	Integer getDeliveryTip(Integer id);
 }

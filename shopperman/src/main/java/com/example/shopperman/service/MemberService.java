@@ -30,4 +30,10 @@ public interface MemberService {
     
     // 평점 매기기
     boolean setScore(String id, Integer score);
+    
+    // 포인트 빼기
+    String subtractPoint(String id, Integer point);
+    
+    // 포인트 더하기
+    boolean addPoint(String nickname, Integer point);
 }

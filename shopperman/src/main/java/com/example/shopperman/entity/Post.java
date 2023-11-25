@@ -14,5 +14,7 @@ public class Post {
 	private MarketLocation marketLocation;       // 가게 위치
 	private Integer deliveryToRequesterDistance; // 배달하는 사람과 배달받을 사람 사이의 거리(미터)
 	private Integer deliveryToMarketDistance;    // 배달하는 사람과 가게 사이의 거리(미터)
+	private String deliverymanNickname;          // 배달원 닉네임
 	private String regdate;                      // 게시물 등록 시간
+	private Integer state;                       // 0: 대기중, 1: 배달중, 2: 배달완료
 }

@@ -44,6 +44,7 @@ public class SecurityServiceImp implements SecurityService {
         map.put("id", member.getId());
         map.put("name", member.getName());
         map.put("nickname", member.getNickname());
+        map.put("address", member.getAddr());
         String jsonStr = gson.toJson(map);
         
         return Jwts.builder()

@@ -119,4 +119,34 @@ public class MemberServiceImp implements MemberService {
 		
 		return memberDao.setScore(newScore);
 	}
+
+	@Override
+	public String subtractPoint(String id, Integer point) {
+		
+		// 차감하려고 하는 포인트가 현재 포인트보다 많을 경우
+		if(memberDao.getPoint(id) < point) {
+			return "Lack of points problem";
+		}
+		
+		Map<String, Object> idAndPoint = new HashedMap<>();
+		idAndPoint.put("id", id);
+		idAndPoint.put("point", point);
+		
+		if(memberDao.subtractPoint(idAndPoint) == true) {
+			return "No problem";
+		}
+		else {
+			return "Dao problem";
+		}
+	}
+
+	@Override
+	public boolean addPoint(String nickname, Integer point) {
+		
+		Map<String, Object> nicknameAndPoint = new HashedMap<>();
+		nicknameAndPoint.put("nickname", nickname);
+		nicknameAndPoint.put("point", point);
+		
+		return memberDao.addPoint(nicknameAndPoint);
+	}
 }

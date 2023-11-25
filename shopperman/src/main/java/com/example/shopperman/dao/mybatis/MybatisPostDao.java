@@ -1,6 +1,7 @@
 package com.example.shopperman.dao.mybatis;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ public class MybatisPostDao implements PostDao {
 	}
 	
 	@Override
+	public List<Post> getPostListByIdList(List<Integer> idList) {
+		return mapper.getPostListByIdList(idList);
+	}
+	
+	@Override
 	public Post getPost(Integer id) {
 		return mapper.getPost(id);
 	}
@@ -46,5 +52,35 @@ public class MybatisPostDao implements PostDao {
 	@Override
 	public String getPublisherNicknameByPostId(Integer id) {
 		return mapper.getPublisherNicknameByPostId(id);
+	}
+
+	@Override
+	public boolean setDeliverymanNickname(Map<String, Object> idAndDeliverymanNickname) {
+		return mapper.setDeliverymanNickname(idAndDeliverymanNickname);
+	}
+	
+	@Override
+	public String getDeliverymanNickname(Integer id) {
+		return mapper.getDeliverymanNickname(id);
+	}
+	
+	@Override
+	public Integer getState(Integer id) {
+		return mapper.getState(id);
+	}
+	
+	@Override
+	public boolean setState(Map<String, Integer> idAndState) {
+		return mapper.setState(idAndState);
+	}
+
+	@Override
+	public Integer getPrice(Integer id) {
+		return mapper.getPrice(id);
+	}
+
+	@Override
+	public Integer getDeliveryTip(Integer id) {
+		return mapper.getDeliveryTip(id);
 	}
 }

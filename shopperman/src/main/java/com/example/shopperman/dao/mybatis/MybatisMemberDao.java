@@ -68,4 +68,19 @@ public class MybatisMemberDao implements MemberDao {
 	public boolean setScore(Map<String, Object> newScore) {
 		return mapper.setScore(newScore);
 	}
+	
+	@Override
+	public Integer getPoint(String id) {
+		return mapper.getPoint(id);
+	}
+
+	@Override
+	public boolean subtractPoint(Map<String, Object> idAndPoint) {
+		return mapper.subtractPoint(idAndPoint);
+	}
+
+	@Override
+	public boolean addPoint(Map<String, Object> nicknameAndPoint) {
+		return mapper.addPoint(nicknameAndPoint);
+	}
 }

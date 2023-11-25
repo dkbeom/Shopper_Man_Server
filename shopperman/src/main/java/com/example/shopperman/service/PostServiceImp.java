@@ -2,7 +2,9 @@ package com.example.shopperman.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,10 +40,10 @@ public class PostServiceImp implements PostService {
 	public List<Post> getPostList(Location location) {
 		
 		// 모든 게시물을 최근 순으로 나열
-		List<Post> allPostList = postDao.getPostList();
+		List<Post> postListWithoutLocationInfo = postDao.getPostList();
 		
 		List<Post> postList = new ArrayList<>();
-		for(Post post : allPostList) {
+		for(Post post : postListWithoutLocationInfo) {
 			
 			// 게시물이 10개가 넘어가면, 10개까지만 반환
 			if(postList.size() >= 10) {
@@ -62,15 +64,48 @@ public class PostServiceImp implements PostService {
 				deliveryToMarketDistance = locationService.calculateDistance(location, marketLocation);
 			}
 			
-			// 거리 제한?
-			// deliveryToRequesterDistance
-			// deliveryToMarketDistance
+			// 요청자 위치 & 가게 위치 각각 5000m 거리 제한
+			if(deliveryToRequesterDistance != null && deliveryToMarketDistance != null) {
+				if(deliveryToRequesterDistance <= 5000 && deliveryToMarketDistance <= 5000) {
+					post.setRequesterLocation(requesterLocation);
+					post.setMarketLocation(marketLocation);
+					post.setDeliveryToRequesterDistance(deliveryToRequesterDistance);
+					post.setDeliveryToMarketDistance(deliveryToMarketDistance);
+					postList.add(post);
+				}
+			}
+		}
+		
+		return postList;
+	}
+	
+	@Override
+	public List<Post> getPostListByIdList(Location location, List<Integer> idList) {
+		
+		// 각각의 게시물 id에 대응하는 게시물 리스트 
+		List<Post> postListWithoutLocationInfo = postDao.getPostListByIdList(idList);
+		
+		List<Post> postList = new ArrayList<>();
+		for(Post post : postListWithoutLocationInfo) {
+			
+			RequesterLocation requesterLocation = locationDao.getRequesterLocationById(post.getId());
+			MarketLocation marketLocation = locationDao.getMarketLocationById(post.getId());
+			
+			Integer deliveryToRequesterDistance = null;
+			if(requesterLocation != null) {
+				// 배달하는 사람과 배달받을 사람 사이의 거리(미터)
+				deliveryToRequesterDistance = locationService.calculateDistance(location, requesterLocation);
+			}
+			Integer deliveryToMarketDistance = null;
+			if(marketLocation != null) {
+				// 배달하는 사람과 가게 사이의 거리(미터)
+				deliveryToMarketDistance = locationService.calculateDistance(location, marketLocation);
+			}
 			
 			post.setRequesterLocation(requesterLocation);
 			post.setMarketLocation(marketLocation);
 			post.setDeliveryToRequesterDistance(deliveryToRequesterDistance);
 			post.setDeliveryToMarketDistance(deliveryToMarketDistance);
-			
 			postList.add(post);
 		}
 		
@@ -127,5 +162,45 @@ public class PostServiceImp implements PostService {
     	Integer deliveryTip = (int)Math.round((double)distance / 1000) * 3000;
 		
 		return deliveryTip;
+	}
+	
+	@Override
+	public boolean setDeliverymanNickname(Integer id, String deliverymanNickname) {
+		
+		Map<String, Object> idAndDeliverymanNickname = new HashedMap<>();
+		idAndDeliverymanNickname.put("id", id);
+		idAndDeliverymanNickname.put("deliverymanNickname", deliverymanNickname);
+		
+		return postDao.setDeliverymanNickname(idAndDeliverymanNickname);
+	}
+	
+	@Override
+	public String getDeliverymanNickname(Integer id) {
+		return postDao.getDeliverymanNickname(id);
+	}
+	
+	@Override
+	public Integer getState(Integer id) {
+		return postDao.getState(id);
+	}
+
+	@Override
+	public boolean setState(Integer id, Integer state) {
+		
+		Map<String, Integer> idAndState = new HashedMap<>();
+		idAndState.put("id", id);
+		idAndState.put("state", state);
+		
+		return postDao.setState(idAndState);
+	}
+
+	@Override
+	public Integer getPrice(Integer id) {
+		return postDao.getPrice(id);
+	}
+
+	@Override
+	public Integer getDeliveryTip(Integer id) {
+		return postDao.getDeliveryTip(id);
 	}
 }

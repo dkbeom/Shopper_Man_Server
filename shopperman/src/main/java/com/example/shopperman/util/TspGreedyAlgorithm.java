@@ -15,7 +15,7 @@ public class TspGreedyAlgorithm {
 	private boolean[] visited; // 방문한 Location인지 여부를 저장하는 배열
 	private Double[][] distances; // Location 간 거리를 저장하는 배열
 	private ArrayList<Integer> minPath; // 최소 경로 (인덱스 번호)
-	private ArrayList<String> requesterNameCheckList; // 심부름 요청자 체크 리스트
+	private ArrayList<Integer> idCheckList; // id 체크 리스트
 
 	// 심부름 요청자 위치, 가게 위치, 경유지 위치 모두 담은 locationList를 입력 (심부름 제공자 현재 위치 제외)
 	public TspGreedyAlgorithm(List<Location> locationList) {
@@ -24,7 +24,7 @@ public class TspGreedyAlgorithm {
 		this.visited = new boolean[locationList.size() + 1];
 		this.distances = new Double[locationList.size() + 1][locationList.size() + 1];
 		this.minPath = new ArrayList<Integer>();
-		this.requesterNameCheckList = new ArrayList<String>();
+		this.idCheckList = new ArrayList<Integer>();
 	}
 
 	// Location 최단 경로 리스트를 반환해주는 메소드
@@ -126,7 +126,7 @@ public class TspGreedyAlgorithm {
 					if(locationList.get(j - 1) instanceof RequesterLocation) {
 						RequesterLocation r = (RequesterLocation) locationList.get(j - 1);
 						// 심부름 요청자 리스트에 이름이 존재하면
-						if(requesterNameCheckList.contains(r.getRequesterName())) {
+						if(idCheckList.contains(r.getId())) {
 							// 현재까지 가장 가까운 Location으로 등록
 							closestLocation = j;
 							closestDistance = distances[minPath.get(i - 1)][j];
@@ -144,14 +144,16 @@ public class TspGreedyAlgorithm {
 			// 다음 Location이 MarketLocation 이면, 심부름 요청자 리스트 적어두기
 			if(locationList.get(closestLocation - 1) instanceof MarketLocation) {
 				MarketLocation m = (MarketLocation) locationList.get(closestLocation - 1);
-				if(m.getRequesterName() != null) {
-					requesterNameCheckList.add(m.getRequesterName());
+				if(m.getId() != null) {
+					idCheckList.add(m.getId());
 				}
 			}
 			// 다음 Location이 RequesterLocation 이면, 심부름 요청자 리스트 다시 지우기 (메모리를 위해서)
 			else if(locationList.get(closestLocation - 1) instanceof RequesterLocation) {
 				RequesterLocation r = (RequesterLocation) locationList.get(closestLocation - 1);
-				requesterNameCheckList.remove(r.getRequesterName());
+				if(r.getId() != null) {
+					idCheckList.remove(r.getId());
+				}
 			}
 			
 			// 현재 가장 가까운 Location 등록 & 방문 체크

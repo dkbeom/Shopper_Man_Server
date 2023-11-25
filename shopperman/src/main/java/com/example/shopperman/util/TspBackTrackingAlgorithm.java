@@ -1,8 +1,6 @@
 package com.example.shopperman.util;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ public class TspBackTrackingAlgorithm {
     private Double[][] distances; // Location 간 거리를 저장하는 배열
     private Double minDistance; // 최소 거리
     private ArrayList<Integer> minPath; // 최소 경로 (인덱스 번호)
-    private ArrayList<String> requesterNameCheckList; // 심부름 요청자 체크 리스트
+    private ArrayList<Integer> idCheckList; // id 체크 리스트
     
     public TspBackTrackingAlgorithm(List<Location> locationList) {
     	this.locationList = locationList;
@@ -27,7 +25,7 @@ public class TspBackTrackingAlgorithm {
         this.distances = new Double[locationList.size() + 1][locationList.size() + 1];
         this.minDistance = Double.MAX_VALUE;
         this.minPath = new ArrayList<Integer>();
-        this.requesterNameCheckList = new ArrayList<String>();
+        this.idCheckList = new ArrayList<Integer>();
     }
     
     // Location 최단 경로 리스트를 반환해주는 메소드
@@ -152,7 +150,7 @@ public class TspBackTrackingAlgorithm {
             	if(locationList.get(i - 1) instanceof RequesterLocation) {
             		RequesterLocation r = (RequesterLocation) locationList.get(i - 1);
 					// 심부름 요청자 리스트에 이름이 존재하면 방문 처리
-					if(requesterNameCheckList.contains(r.getRequesterName())) {
+            		if(idCheckList.contains(r.getId())) {
 						visited[i] = true; // 방문 처리
 		                path.add(i); // 경로에 추가
 		                totalDistance += distances[currentLocation][i]; // 거리 더하기
@@ -167,8 +165,8 @@ public class TspBackTrackingAlgorithm {
             		// 다음 Location이 MarketLocation 인 경우, 심부름 요청자 리스트 적어두기
         			if(locationList.get(i - 1) instanceof MarketLocation) {
         				MarketLocation m = (MarketLocation) locationList.get(i - 1);
-        				if(m.getRequesterName() != null) {
-        					requesterNameCheckList.add(m.getRequesterName());
+        				if(m.getId() != null) {
+        					idCheckList.add(m.getId());
         				}
         			}
             		visited[i] = true; // 방문 처리
@@ -178,8 +176,8 @@ public class TspBackTrackingAlgorithm {
                     // 다음 Location이 MarketLocation 인 경우, 심부름 요청자 리스트 다시 지우기
                     if(locationList.get(i - 1) instanceof MarketLocation) {
                     	MarketLocation m = (MarketLocation) locationList.get(i - 1);
-                    	if(m.getRequesterName() != null) {
-                    		requesterNameCheckList.remove(m.getRequesterName());
+                    	if(m.getId() != null) {
+                    		idCheckList.remove(m.getId());
                     	}
                     }
                     visited[i] = false; // 방문 처리 취소

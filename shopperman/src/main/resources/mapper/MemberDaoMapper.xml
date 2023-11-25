@@ -67,5 +67,28 @@
     		NUMSCORE = #{newNumScore}
     	WHERE ID = #{id}
     </update>
+    
+    <!-- getPoint -->
+    <select id="getPoint" resultType="Integer">
+	    SELECT POINT
+	    FROM MEMBER
+	    WHERE ID = #{id}
+    </select>
+    
+    <!-- subtractPoint -->
+	<update id="subtractPoint">
+		UPDATE MEMBER
+		SET
+			POINT = POINT - #{point}
+		WHERE ID = #{id}
+	</update>
 
+	<!-- addPoint -->
+	<update id="addPoint">
+		UPDATE MEMBER
+		SET
+			POINT = POINT + #{point}
+		WHERE NICKNAME = #{nickname}
+	</update>
+	
 </mapper>

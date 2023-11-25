@@ -25,4 +25,10 @@ public interface MemberDao {
     Integer getNumScore(String id);
     
     boolean setScore(Map<String, Object> newScore);
+    
+    Integer getPoint(String id);
+
+	boolean subtractPoint(Map<String, Object> idAndPoint);
+
+	boolean addPoint(Map<String, Object> idAndPoint);
 }
