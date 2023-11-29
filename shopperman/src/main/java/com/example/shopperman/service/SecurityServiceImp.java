@@ -26,7 +26,7 @@ public class SecurityServiceImp implements SecurityService {
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
     
-    private static final long expTime = 120*1000*60; // 2시간
+    private static final long expTime = 1000*60*60*24; // 24시간
 
     // 토큰 생성
     // 로그인 서비스 던질 때 같이 던져주면 됨
