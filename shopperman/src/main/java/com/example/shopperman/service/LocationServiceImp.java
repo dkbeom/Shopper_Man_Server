@@ -6,8 +6,16 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.example.shopperman.dao.LocationDao;
 import com.example.shopperman.entity.Location;
@@ -16,10 +24,14 @@ import com.example.shopperman.entity.MarketLocation;
 import com.example.shopperman.entity.RequesterLocation;
 
 @Service("locationService")
+@PropertySource("classpath:local.properties")
 public class LocationServiceImp implements LocationService {
 
 	@Autowired
 	private LocationDao locationDao;
+	
+	@Value("${KAKAO_REST_API_KEY}")
+	private String kakaoRestApiKey;
 
 	// ---------------------------------------------------------------------------------
 
@@ -110,5 +122,31 @@ public class LocationServiceImp implements LocationService {
     	Integer distance = (int)(distanceDecimal.doubleValue() * 1000);
 		
 		return distance;
+	}
+	
+	@Override
+	public String getRoadName(String mapX, String mapY) {
+		
+		String uriString = "https://dapi.kakao.com/v2/local/geo/coord2address"
+							+ "?x=" + mapX
+							+ "&y=" + mapY;
+		
+		// HttpHeaders 객체 생성 및 설정
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "KakaoAK " + kakaoRestApiKey);
+		
+		// HttpEntity 객체 생성
+		HttpEntity<String> request = new HttpEntity<>(headers);
+		
+		// RestTemplate 생성
+		RestTemplate restTemplate = new RestTemplate();
+		// api 호출
+		ResponseEntity<String> responseEntity = restTemplate.exchange(uriString, HttpMethod.GET, request, String.class);
+		// response body
+		JSONObject body = new JSONObject(responseEntity.getBody());
+		// 도로명 주소 읽어오기
+		String roadName = (String) body.getJSONArray("documents").getJSONObject(0).getJSONObject("road_address").get("address_name");
+		
+		return roadName;
 	}
 }

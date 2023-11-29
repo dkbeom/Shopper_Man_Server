@@ -21,4 +21,7 @@ public interface LocationService {
 	
 	// 거리(미터) 계산
 	Integer calculateDistance(Location locationA, Location locationB);
+	
+	// 좌표로 도로명 주소 변환
+	String getRoadName(String mapX, String mapY);
 }

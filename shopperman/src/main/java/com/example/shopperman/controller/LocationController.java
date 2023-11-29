@@ -50,4 +50,13 @@ public class LocationController {
 			return "{\"result\" : \"FAILURE\"}";
 		}
 	}
+	
+	// 좌표로 주소 변환하기
+	@GetMapping(value = "/geo", produces = "text/plain;charset=UTF-8")
+	public String geo(String mapX, String mapY) {
+		
+		String roadName= locationService.getRoadName(mapX, mapY);
+		
+		return "{\"juso\" : \"" + roadName + "\"}";
+	}
 }
