@@ -51,7 +51,7 @@ public class PostController {
 	// 게시글 등록
 	@PostMapping("/create")
 	public String createPost(@RequestHeader(value = "Authorization") String token, @RequestBody Post post) {
-	// 파라미터: title, item, price, deliveryTip, requesterLocation(addr, mapX, mapY), marketLocation(addr, mapX, mapY, marketName)
+	// 파라미터: title, item, price, deliveryTip, content, requesterLocation(addr, mapX, mapY), marketLocation(addr, mapX, mapY, marketName)
 		
 		String currentUserId = securityService.getSubject(token).get("id");
 		String currentUserNickname = securityService.getSubject(token).get("nickname");

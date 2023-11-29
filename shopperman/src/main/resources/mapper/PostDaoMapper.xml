@@ -11,8 +11,8 @@
         BEGIN
         	SELECT POST_ID_SEQ.NEXTVAL INTO SEQVALUE FROM DUAL;
         	
-        	INSERT INTO POST(ID, PUBLISHER_NICKNAME, TITLE, ITEM, PRICE, DELIVERY_TIP)
-        	VALUES(SEQVALUE, #{publisherNickname}, #{title}, #{item}, #{price}, #{deliveryTip});
+        	INSERT INTO POST(ID, PUBLISHER_NICKNAME, TITLE, ITEM, PRICE, DELIVERY_TIP, CONTENT)
+        	VALUES(SEQVALUE, #{publisherNickname}, #{title}, #{item}, #{price}, #{deliveryTip}, #{content});
         	
         	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
         	VALUES(SEQVALUE, #{requesterLocation.addr}, #{requesterLocation.mapX}, #{requesterLocation.mapY}, #{requesterLocation.requesterName}, 1);
