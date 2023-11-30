@@ -55,8 +55,8 @@ public class LocationController {
 	@GetMapping(value = "/geo", produces = "text/plain;charset=UTF-8")
 	public String geo(String mapX, String mapY) {
 		
-		String roadName= locationService.getRoadName(mapX, mapY);
+		String address = locationService.getRoadName(mapX, mapY);
 		
-		return "{\"juso\" : \"" + roadName + "\"}";
+		return "{\"juso\" : \"" + address + "\"}";
 	}
 }

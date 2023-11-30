@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -144,9 +145,22 @@ public class LocationServiceImp implements LocationService {
 		ResponseEntity<String> responseEntity = restTemplate.exchange(uriString, HttpMethod.GET, request, String.class);
 		// response body
 		JSONObject body = new JSONObject(responseEntity.getBody());
-		// 도로명 주소 읽어오기
-		String roadName = (String) body.getJSONArray("documents").getJSONObject(0).getJSONObject("road_address").get("address_name");
+		// 주소 읽어오기
+		JSONArray documents = body.getJSONArray("documents");
+		if(documents == null) {
+			return "No_Documents";
+		}
+		if(documents.length() == 0) {
+			return "Empty_Documents";
+		}
+		if(documents.getJSONObject(0).isEmpty()) {
+			return "Empty_Address";
+		}
+		if(documents.getJSONObject(0).getJSONObject("address").isEmpty()) {
+			return "Empty_Address_Name";
+		}
+		String address = (String) documents.getJSONObject(0).getJSONObject("address").get("address_name");
 		
-		return roadName;
+		return address;
 	}
 }
