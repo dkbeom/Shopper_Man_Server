@@ -2,6 +2,7 @@ package com.example.shopperman.service;
 
 import java.util.List;
 
+import com.example.shopperman.entity.Coordinate;
 import com.example.shopperman.entity.Location;
 import com.example.shopperman.entity.LocationContainer;
 
@@ -22,6 +23,9 @@ public interface LocationService {
 	// 거리(미터) 계산
 	Integer calculateDistance(Location locationA, Location locationB);
 	
-	// 좌표로 도로명 주소 변환
+	// 도로명 주소 -> 좌표 변환
+	Coordinate getCoordinate(String roadName);
+	
+	// 좌표 -> 도로명 주소 변환
 	String getRoadName(String mapX, String mapY);
 }

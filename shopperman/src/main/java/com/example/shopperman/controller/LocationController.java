@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.shopperman.entity.Coordinate;
 import com.example.shopperman.entity.Location;
 import com.example.shopperman.entity.LocationContainer;
 import com.example.shopperman.service.LocationService;
@@ -51,12 +52,21 @@ public class LocationController {
 		}
 	}
 	
-	// 좌표로 주소 변환하기
-	@GetMapping(value = "/geo", produces = "text/plain;charset=UTF-8")
-	public String geo(String mapX, String mapY) {
+	// 도로명 주소 -> 좌표 변환하기
+	@GetMapping("/geo")
+	public Coordinate geo(String roadName) {
 		
-		String address = locationService.getRoadName(mapX, mapY);
+		Coordinate coordinate = locationService.getCoordinate(roadName);
 		
-		return "{\"juso\" : \"" + address + "\"}";
+		return coordinate;
+	}
+	
+	// 좌표 -> 도로명 주소 변환하기
+	@GetMapping(value = "/reversegeo", produces = "text/plain;charset=UTF-8")
+	public String reversegeo(String mapX, String mapY) {
+		
+		String roadName = locationService.getRoadName(mapX, mapY);
+		
+		return "{\"juso\" : \"" + roadName + "\"}";
 	}
 }

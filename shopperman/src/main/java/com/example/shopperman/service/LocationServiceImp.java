@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.shopperman.dao.LocationDao;
+import com.example.shopperman.entity.Coordinate;
 import com.example.shopperman.entity.Location;
 import com.example.shopperman.entity.LocationContainer;
 import com.example.shopperman.entity.MarketLocation;
@@ -30,7 +31,7 @@ public class LocationServiceImp implements LocationService {
 
 	@Autowired
 	private LocationDao locationDao;
-	
+
 	@Value("${KAKAO_REST_API_KEY}")
 	private String kakaoRestApiKey;
 
@@ -47,12 +48,12 @@ public class LocationServiceImp implements LocationService {
 		for (Integer id : idList) {
 			LocationContainer locationContainer = new LocationContainer();
 			for (RequesterLocation requesterLocation : requesterLocationList) {
-				if(requesterLocation.getId() == id) {
+				if (requesterLocation.getId() == id) {
 					locationContainer.setRequesterLocation(requesterLocation);
 				}
 			}
 			for (MarketLocation marketLocation : marketLocationList) {
-				if(marketLocation.getId() == id) {
+				if (marketLocation.getId() == id) {
 					locationContainer.setMarketLocation(marketLocation);
 				}
 			}
@@ -61,7 +62,7 @@ public class LocationServiceImp implements LocationService {
 
 		return locationContainerList;
 	}
-	
+
 	@Override
 	public LocationContainer getLocationsById(Integer id) {
 
@@ -75,27 +76,28 @@ public class LocationServiceImp implements LocationService {
 
 	@Override
 	public List<LocationContainer> getLocationsListByRequesterName(String requesterName) {
-		
+
 		List<Integer> idList = locationDao.getIdListByRequesterName(requesterName);
-		List<RequesterLocation> requesterLocationList = locationDao.getRequesterLocationListByRequesterName(requesterName);
+		List<RequesterLocation> requesterLocationList = locationDao
+				.getRequesterLocationListByRequesterName(requesterName);
 		List<MarketLocation> marketLocationList = locationDao.getMarketLocationListByRequesterName(requesterName);
-		
+
 		List<LocationContainer> locationContainerList = new ArrayList<>();
 		for (Integer id : idList) {
 			LocationContainer locationContainer = new LocationContainer();
 			for (RequesterLocation requesterLocation : requesterLocationList) {
-				if(requesterLocation.getId() == id) {
+				if (requesterLocation.getId() == id) {
 					locationContainer.setRequesterLocation(requesterLocation);
 				}
 			}
 			for (MarketLocation marketLocation : marketLocationList) {
-				if(marketLocation.getId() == id) {
+				if (marketLocation.getId() == id) {
 					locationContainer.setMarketLocation(marketLocation);
 				}
 			}
 			locationContainerList.add(locationContainer);
 		}
-		
+
 		return locationContainerList;
 	}
 
@@ -103,42 +105,40 @@ public class LocationServiceImp implements LocationService {
 	public boolean setLocation(Location location) {
 		return locationDao.setLocation(location);
 	}
-	
+
 	@Override
 	public Integer calculateDistance(Location locationA, Location locationB) {
-		
+
 		BigDecimal locationADecimalX = new BigDecimal(locationA.getMapX());
 		BigDecimal locationBDecimalX = new BigDecimal(locationB.getMapX());
-		
+
 		BigDecimal locationADecimalY = new BigDecimal(locationA.getMapY());
 		BigDecimal locationBDecimalY = new BigDecimal(locationB.getMapY());
-		
+
 		BigDecimal x = locationADecimalX.subtract(locationBDecimalX).multiply(new BigDecimal(88));
-    	BigDecimal y = locationADecimalY.subtract(locationBDecimalY).multiply(new BigDecimal(111));
-    	BigDecimal x2 = x.pow(2);
-    	BigDecimal y2 = y.pow(2);
-    	MathContext mc = new MathContext(10, RoundingMode.HALF_UP);
-    	BigDecimal distanceDecimal = x2.add(y2).sqrt(mc);
-    	
-    	Integer distance = (int)(distanceDecimal.doubleValue() * 1000);
-		
+		BigDecimal y = locationADecimalY.subtract(locationBDecimalY).multiply(new BigDecimal(111));
+		BigDecimal x2 = x.pow(2);
+		BigDecimal y2 = y.pow(2);
+		MathContext mc = new MathContext(10, RoundingMode.HALF_UP);
+		BigDecimal distanceDecimal = x2.add(y2).sqrt(mc);
+
+		Integer distance = (int) (distanceDecimal.doubleValue() * 1000);
+
 		return distance;
 	}
-	
+
 	@Override
-	public String getRoadName(String mapX, String mapY) {
-		
-		String uriString = "https://dapi.kakao.com/v2/local/geo/coord2address"
-							+ "?x=" + mapX
-							+ "&y=" + mapY;
-		
+	public Coordinate getCoordinate(String roadName) {
+
+		String uriString = "https://dapi.kakao.com/v2/local/search/address?query=" + roadName;
+
 		// HttpHeaders 객체 생성 및 설정
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Authorization", "KakaoAK " + kakaoRestApiKey);
-		
+
 		// HttpEntity 객체 생성
 		HttpEntity<String> request = new HttpEntity<>(headers);
-		
+
 		// RestTemplate 생성
 		RestTemplate restTemplate = new RestTemplate();
 		// api 호출
@@ -147,20 +147,64 @@ public class LocationServiceImp implements LocationService {
 		JSONObject body = new JSONObject(responseEntity.getBody());
 		// 주소 읽어오기
 		JSONArray documents = body.getJSONArray("documents");
-		if(documents == null) {
+		
+		if (documents == null) {
+			return null;
+		}
+		if (documents.length() == 0) {
+			return null;
+		}
+		if (documents.getJSONObject(0).isEmpty()) {
+			return null;
+		}
+		if (documents.getJSONObject(0).get("x") == null || documents.getJSONObject(0).get("y") == null) {
+			return null;
+		}
+		String mapX = (String) documents.getJSONObject(0).get("x");
+		String mapY = (String) documents.getJSONObject(0).get("y");
+
+		Coordinate coordinate = new Coordinate();
+		coordinate.setMapX(mapX);
+		coordinate.setMapY(mapY);
+		
+		return coordinate;
+	}
+
+	@Override
+	public String getRoadName(String mapX, String mapY) {
+
+		String uriString = "https://dapi.kakao.com/v2/local/geo/coord2address?x=" + mapX + "&y=" + mapY;
+
+		// HttpHeaders 객체 생성 및 설정
+		HttpHeaders headers = new HttpHeaders();
+		headers.set("Authorization", "KakaoAK " + kakaoRestApiKey);
+
+		// HttpEntity 객체 생성
+		HttpEntity<String> request = new HttpEntity<>(headers);
+
+		// RestTemplate 생성
+		RestTemplate restTemplate = new RestTemplate();
+		// api 호출
+		ResponseEntity<String> responseEntity = restTemplate.exchange(uriString, HttpMethod.GET, request, String.class);
+		// response body
+		JSONObject body = new JSONObject(responseEntity.getBody());
+		// 주소 읽어오기
+		JSONArray documents = body.getJSONArray("documents");
+		
+		if (documents == null) {
 			return "No_Documents";
 		}
-		if(documents.length() == 0) {
+		if (documents.length() == 0) {
 			return "Empty_Documents";
 		}
-		if(documents.getJSONObject(0).isEmpty()) {
-			return "Empty_Address";
+		if (documents.getJSONObject(0).isEmpty()) {
+			return "Empty_Road_Address";
 		}
-		if(documents.getJSONObject(0).getJSONObject("address").isEmpty()) {
-			return "Empty_Address_Name";
+		if (documents.getJSONObject(0).getJSONObject("road_address").isEmpty()) {
+			return "Empty_Road_Address_Name";
 		}
-		String address = (String) documents.getJSONObject(0).getJSONObject("address").get("address_name");
-		
-		return address;
+		String roadName = (String) documents.getJSONObject(0).getJSONObject("road_address").get("address_name");
+
+		return roadName;
 	}
 }
