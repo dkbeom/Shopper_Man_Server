@@ -88,14 +88,14 @@ public class TspGreedyAlgorithm {
 		// 원래 Location 순서대로 addr 출력
 		System.out.printf("원래 순서:   ");
 		for(Location location : locationList) {
-			System.out.printf("[%s]  ", location.getAddr());
+			System.out.printf("[%s]  ", location.getRoadName());
 		}
 		System.out.println();
 		System.out.println();
 		// 정렬된 Location 순서대로 addr 출력
 		System.out.printf("정렬된 순서:  ");
 		for(Location location : orderedLocationList) {
-			System.out.printf("[%s]  ", location.getAddr());
+			System.out.printf("[%s]  ", location.getRoadName());
 		}
 		System.out.println();
 		System.out.println();

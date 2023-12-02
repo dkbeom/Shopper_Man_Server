@@ -53,8 +53,8 @@
 
     <!-- setLocation -->
     <insert id="setLocation" parameterType="com.example.shopperman.entity.Location" >
-        INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, TYPE)
-        VALUES(POST_ID_SEQ.NEXTVAL, #{addr}, #{mapX}, #{mapY}, 0)
+        INSERT INTO LOCATION(ID, ROADNAME, MAPX, MAPY, TYPE)
+        VALUES(POST_ID_SEQ.NEXTVAL, #{roadName}, #{mapX}, #{mapY}, 0)
     </insert>
     
     <!-- deleteLocations -->

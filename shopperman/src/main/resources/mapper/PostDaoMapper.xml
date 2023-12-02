@@ -14,11 +14,11 @@
         	INSERT INTO POST(ID, PUBLISHER_NICKNAME, TITLE, ITEM, PRICE, DELIVERY_TIP, CONTENT)
         	VALUES(SEQVALUE, #{publisherNickname}, #{title}, #{item}, #{price}, #{deliveryTip}, #{content});
         	
-        	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
-        	VALUES(SEQVALUE, #{requesterLocation.addr}, #{requesterLocation.mapX}, #{requesterLocation.mapY}, #{requesterLocation.requesterName}, 1);
+        	INSERT INTO LOCATION(ID, ROADNAME, ADDR, MAPX, MAPY, REQUESTER_NAME, TYPE)
+        	VALUES(SEQVALUE, #{requesterLocation.roadName}, #{requesterLocation.addr}, #{requesterLocation.mapX}, #{requesterLocation.mapY}, #{requesterLocation.requesterName}, 1);
         	
-        	INSERT INTO LOCATION(ID, ADDR, MAPX, MAPY, REQUESTER_NAME, MARKET_NAME, TYPE)
-        	VALUES(SEQVALUE, #{marketLocation.addr}, #{marketLocation.mapX}, #{marketLocation.mapY}, #{marketLocation.requesterName}, #{marketLocation.marketName}, 2);
+        	INSERT INTO LOCATION(ID, ROADNAME, MAPX, MAPY, REQUESTER_NAME, MARKET_NAME, TYPE)
+        	VALUES(SEQVALUE, #{marketLocation.roadName}, #{marketLocation.mapX}, #{marketLocation.mapY}, #{marketLocation.requesterName}, #{marketLocation.marketName}, 2);
         END;
     </insert>
     

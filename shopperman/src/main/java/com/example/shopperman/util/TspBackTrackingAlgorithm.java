@@ -88,14 +88,14 @@ public class TspBackTrackingAlgorithm {
 		// 원래 Location 순서대로 addr 출력
 		System.out.printf("원래 순서:   ");
 		for(Location p : locationList) {
-			System.out.printf("[%s]  ", p.getAddr());
+			System.out.printf("[%s]  ", p.getRoadName());
 		}
 		System.out.println();
 		System.out.println();
 		// 정렬된 Location 순서대로 addr 출력
 		System.out.printf("정렬된 순서:  ");
 		for(Location p : orderedLocationList) {
-			System.out.printf("[%s]  ", p.getAddr());
+			System.out.printf("[%s]  ", p.getRoadName());
 		}
 		System.out.println();
 		System.out.println();

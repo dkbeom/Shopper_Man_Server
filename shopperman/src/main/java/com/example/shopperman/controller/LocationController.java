@@ -43,7 +43,7 @@ public class LocationController {
 	// 새로운 Location 넣기
 	@PostMapping("/set/common")
 	public String setLocation(@RequestBody Location location) {
-	// 파라미터: addr, mapX, mapY
+	// 파라미터: roadName, mapX, mapY
 		
 		if(locationService.setLocation(location)) {
 			return "{\"result\" : \"SUCCESS\"}";

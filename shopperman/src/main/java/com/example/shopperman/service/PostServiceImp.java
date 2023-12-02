@@ -159,7 +159,8 @@ public class PostServiceImp implements PostService {
 	public Integer calculateDeliveryTip(Integer distance) {
     	
     	// 1000m 당 3000 포인트
-    	Integer deliveryTip = (int)Math.round((double)distance / 1000) * 3000;
+    	double roundedDistance = Math.round((double)distance / 100) * 100;
+    	Integer deliveryTip = (int)(roundedDistance / 1000 * 3000);
 		
 		return deliveryTip;
 	}
