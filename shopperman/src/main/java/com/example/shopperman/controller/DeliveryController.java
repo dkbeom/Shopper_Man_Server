@@ -200,7 +200,7 @@ public class DeliveryController {
 	public String start(@RequestHeader(value = "Authorization") String token, @RequestBody List<Integer> postIdList) {
 		// 파라미터: POST id 리스트
 
-		String deliverymanNickname = securityService.getSubject(token).get("nickname");
+		String deliverymanNickname = (String)securityService.getSubject(token).get("nickname");
 
 		for (Integer postId : postIdList) {
 			if (postService.getState(postId) == 0) {
@@ -226,7 +226,7 @@ public class DeliveryController {
 	@GetMapping("/complete/request")
 	public String requestCompletion(@RequestHeader(value = "Authorization") String token, Integer postId) {
 
-		String myNickname = securityService.getSubject(token).get("nickname");
+		String myNickname = (String)securityService.getSubject(token).get("nickname");
 
 		// 현재 로그인된 사용자가 게시글의 배달원인 경우
 		if (postService.getDeliverymanNickname(postId).equals(myNickname)) {
@@ -247,7 +247,7 @@ public class DeliveryController {
 	@GetMapping("/complete/confirm")
 	public String confirmCompletion(@RequestHeader(value = "Authorization") String token, Integer postId) {
 
-		String myNickname = securityService.getSubject(token).get("nickname");
+		String myNickname = (String)securityService.getSubject(token).get("nickname");
 
 		// 현재 로그인된 사용자가 게시글의 게시자인 경우
 		if (postService.getPublisherNicknameByPostId(postId).equals(myNickname)) {

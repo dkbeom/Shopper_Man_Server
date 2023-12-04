@@ -53,8 +53,8 @@ public class PostController {
 	public String createPost(@RequestHeader(value = "Authorization") String token, @RequestBody Post post) {
 	// 파라미터: title, item, price, deliveryTip, content, requesterLocation(roadName, addr, mapX, mapY), marketLocation(roadName, marketName, mapX, mapY)
 		
-		String currentUserId = securityService.getSubject(token).get("id");
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserId = (String)securityService.getSubject(token).get("id");
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserId == null || currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}

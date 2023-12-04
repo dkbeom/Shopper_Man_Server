@@ -71,7 +71,7 @@ public class MemberController {
 
     // 토큰에서 subject 꺼내기
     @GetMapping("/get/subject")
-    public Map<String, String> getIdAndNickname(@RequestHeader(value = "Authorization") String token) {
+    public Map<String, Object> getIdAndNickname(@RequestHeader(value = "Authorization") String token) {
 
         return securityService.getSubject(token);
     }

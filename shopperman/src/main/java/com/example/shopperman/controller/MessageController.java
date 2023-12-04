@@ -35,7 +35,7 @@ public class MessageController {
 	public String sendNewMessage(@RequestHeader(value = "Authorization") String token, @RequestBody Message message) {
 	// 파라미터: postId, content
 		
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserNickname = (String)(String)securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}
@@ -59,7 +59,7 @@ public class MessageController {
 	public String sendMessage(@RequestHeader(value = "Authorization") String token, @RequestBody Message message) {
 	// 파라미터: messageId, content
 		
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}
@@ -87,7 +87,7 @@ public class MessageController {
 	// 현재 로그인된 계정에서, 모든 톡방에 대한 발신,수신 메시지 목록 순서대로 모두 가져오기
 	@GetMapping("/get/lists")
 	public List<List<Message>> getMessageLists(@RequestHeader(value = "Authorization") String token) {
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return null;
 		}
@@ -104,7 +104,7 @@ public class MessageController {
 	// 현재 로그인된 계정에서, 특정 톡방에 대한 메세지 읽기
 	@GetMapping("/read")
 	public String readMessage(@RequestHeader(value = "Authorization") String token, Integer messageId) {
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}
@@ -120,7 +120,7 @@ public class MessageController {
 	// 현재 로그인된 계정에서, 읽지 않은 메세지 개수 반환 (새로운 메세지가 있다고 표시할 때 쓰일 예정)
 	@GetMapping("/unread/countAll")
 	public String unreadMessageCountForAllPost(@RequestHeader(value = "Authorization") String token) {
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}
@@ -136,7 +136,7 @@ public class MessageController {
 	// 현재 로그인된 계정에서, 특정 톡방에 대한 읽지 않은 메세지 개수 반환 (새로운 메세지가 있다고 표시할 때 쓰일 예정)
 	@GetMapping("/unread/count")
 	public String unreadMessageCountForPost(@RequestHeader(value = "Authorization") String token, Integer messageId) {
-		String currentUserNickname = securityService.getSubject(token).get("nickname");
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserNickname == null) {
 			return "{\"result\" : \"FAILURE\"}";
 		}

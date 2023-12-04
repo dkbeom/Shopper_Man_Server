@@ -11,4 +11,5 @@ public class Member {
     private String addr;
     private Integer sumScore;      // 평점 총점
 	private Integer numScore;      // 평점 갯수
+	private Integer point;         // 포인트
 }

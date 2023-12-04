@@ -10,5 +10,5 @@ public interface SecurityService {
     String createToken(Member member);
     
     // subject 가져오기
-    Map<String, String> getSubject(String token);
+    Map<String, Object> getSubject(String token);
 }

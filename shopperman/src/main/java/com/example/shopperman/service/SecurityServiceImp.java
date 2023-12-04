@@ -40,11 +40,12 @@ public class SecurityServiceImp implements SecurityService {
         Key signingKey = new SecretKeySpec(secretKeyBytes, signatureAlgorithm.getJcaName());
 
         Gson gson = new Gson();
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("id", member.getId());
         map.put("name", member.getName());
         map.put("nickname", member.getNickname());
         map.put("address", member.getAddr());
+        map.put("point", member.getPoint());
         String jsonStr = gson.toJson(map);
         
         return Jwts.builder()
@@ -55,7 +56,7 @@ public class SecurityServiceImp implements SecurityService {
     }
 
     // 토큰 검증하는 메소드를 만들어서 boolean 타입으로 리턴하는 걸 만들어서 사용하면 됨
-    public Map<String, String> getSubject(String token) {
+    public Map<String, Object> getSubject(String token) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(DatatypeConverter.parseBase64Binary(SECRET_KEY))
                 .build()
@@ -63,7 +64,7 @@ public class SecurityServiceImp implements SecurityService {
                 .getBody();
         
         Gson gson = new Gson();
-        Map<String, String> userInfoMap = gson.fromJson(claims.getSubject(), Map.class);
+        Map<String, Object> userInfoMap = gson.fromJson(claims.getSubject(), Map.class);
         
         return userInfoMap;
     }
