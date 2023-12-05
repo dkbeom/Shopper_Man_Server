@@ -30,8 +30,8 @@ public class MybatisPostDao implements PostDao {
 	}
 
 	@Override
-	public List<Post> getPostList() {
-		return mapper.getPostList();
+	public List<Post> getPostList(String currentUserNickname) {
+		return mapper.getPostList(currentUserNickname);
 	}
 	
 	@Override

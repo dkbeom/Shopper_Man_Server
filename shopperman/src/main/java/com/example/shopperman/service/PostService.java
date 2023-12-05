@@ -11,7 +11,7 @@ public interface PostService {
 	void createPost(Post post);
 	
 	// 현재 내 위치 근처 게시글 리스트 조회
-	List<Post> getPostList(Location location);
+	List<Post> getPostList(String currentUserNickname, Location location);
 	
 	// 각각의 게시글 id에 대응하는 모든 게시글 조회
 	List<Post> getPostListByIdList(Location location, List<Integer> idList);

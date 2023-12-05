@@ -31,6 +31,7 @@
     <select id="getPostList" resultMap="postResultMap">
     	SELECT *
     	FROM POST
+    	WHERE PUBLISHER_NICKNAME != #{currentUserNickname}
     	ORDER BY REGDATE DESC
     </select>
     

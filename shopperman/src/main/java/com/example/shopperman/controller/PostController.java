@@ -80,10 +80,12 @@ public class PostController {
 	
 	// 게시글 리스트 조회 (배달하려는 사람 주소 넘겨주는 경우)
 	@PostMapping("/get/list")
-	public List<Post> getPostList(@RequestBody Location location) {
+	public List<Post> getPostList(@RequestHeader(value = "Authorization") String token, @RequestBody Location location) {
 	// 파라미터: mapX, mapY
 
-		return postService.getPostList(location);
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
+		
+		return postService.getPostList(currentUserNickname, location);
 	}
 	
 	// 게시글 id로, 해당 게시물 하나 조회

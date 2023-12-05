@@ -37,10 +37,10 @@ public class PostServiceImp implements PostService {
 	}
 	
 	@Override
-	public List<Post> getPostList(Location location) {
+	public List<Post> getPostList(String currentUserNickname, Location location) {
 		
 		// 모든 게시물을 최근 순으로 나열
-		List<Post> postListWithoutLocationInfo = postDao.getPostList();
+		List<Post> postListWithoutLocationInfo = postDao.getPostList(currentUserNickname);
 		
 		List<Post> postList = new ArrayList<>();
 		for(Post post : postListWithoutLocationInfo) {

@@ -11,7 +11,7 @@ public interface PostDao {
 	void insertPost(Post post);
 
 	// 게시글 리스트 가져오기
-	List<Post> getPostList();
+	List<Post> getPostList(String currentUserNickname);
 	
 	// 각각의 게시글 id에 대응하는 모든 게시글 가져오기
 	List<Post> getPostListByIdList(List<Integer> idList);
