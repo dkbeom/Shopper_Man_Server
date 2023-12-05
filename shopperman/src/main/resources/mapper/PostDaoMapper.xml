@@ -102,5 +102,17 @@
     	FROM POST
     	WHERE ID = #{id}
     </select>
+    
+    <select id="getPostListByPublisherNickname" resultMap="postResultMap">
+    	SELECT *
+    	FROM POST
+    	WHERE PUBLISHER_NICKNAME = #{nickname}
+    </select>
+    
+    <select id="getPostListByDeliverymanNickname" resultMap="postResultMap">
+    	SELECT *
+    	FROM POST
+    	WHERE DELIVERYMAN_NICKNAME = #{nickname}
+    </select>
 
 </mapper>

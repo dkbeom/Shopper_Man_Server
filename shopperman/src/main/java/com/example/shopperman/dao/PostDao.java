@@ -42,4 +42,10 @@ public interface PostDao {
 
 	// deliveryTip 조회
 	Integer getDeliveryTip(Integer id);
+
+	// 게시자 이름으로 게시글 리스트 조회
+	List<Post> getPostListByPublisherNickname(String nickname);
+
+	// 배달원 이름으로 게시글 리스트 조회
+	List<Post> getPostListByDeliverymanNickname(String nickname);
 }

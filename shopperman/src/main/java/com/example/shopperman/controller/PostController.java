@@ -53,6 +53,10 @@ public class PostController {
 	public String createPost(@RequestHeader(value = "Authorization") String token, @RequestBody Post post) {
 	// 파라미터: title, item, price, deliveryTip, content, requesterLocation(roadName, addr, mapX, mapY), marketLocation(roadName, marketName, mapX, mapY)
 		
+		if(token == null || token.equals("")) {
+			return "{\"result\" : \"FAILURE\"}";
+		}
+		
 		String currentUserId = (String)securityService.getSubject(token).get("id");
 		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
 		if(currentUserId == null || currentUserNickname == null) {
@@ -107,5 +111,37 @@ public class PostController {
 		} else {
 			return "{\"result\" : \"FAILURE\"}";
 		}
+	}
+	
+	// 게시자 이름으로 게시글 리스트 조회
+	@GetMapping("/get/list/publish")
+	public List<Post> getPostListByPublisherNickname(@RequestHeader(value = "Authorization") String token){
+		
+		if(token == null || token.equals("")) {
+			return null;
+		}
+		
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
+		if(currentUserNickname == null) {
+			return null;
+		}
+		
+		return postService.getPostListByPublisherNickname(currentUserNickname);
+	}
+	
+	// 배달원 이름으로 게시글 리스트 조회
+	@GetMapping("/get/list/delivery")
+	public List<Post> getPostListByDeliverymanNickname(@RequestHeader(value = "Authorization") String token){
+		
+		if(token == null || token.equals("")) {
+			return null;
+		}
+		
+		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
+		if(currentUserNickname == null) {
+			return null;
+		}
+		
+		return postService.getPostListByDeliverymanNickname(currentUserNickname);
 	}
 }

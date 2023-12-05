@@ -204,4 +204,42 @@ public class PostServiceImp implements PostService {
 	public Integer getDeliveryTip(Integer id) {
 		return postDao.getDeliveryTip(id);
 	}
+
+	@Override
+	public List<Post> getPostListByPublisherNickname(String nickname) {
+		
+		List<Post> postListWithoutLocationInfo = postDao.getPostListByPublisherNickname(nickname);
+		
+		List<Post> postList = new ArrayList<>();
+		for(Post post : postListWithoutLocationInfo) {
+			
+			RequesterLocation requesterLocation = locationDao.getRequesterLocationById(post.getId());
+			MarketLocation marketLocation = locationDao.getMarketLocationById(post.getId());
+			
+			post.setRequesterLocation(requesterLocation);
+			post.setMarketLocation(marketLocation);
+			postList.add(post);
+		}
+		
+		return postList;
+	}
+
+	@Override
+	public List<Post> getPostListByDeliverymanNickname(String nickname) {
+		
+		List<Post> postListWithoutLocationInfo = postDao.getPostListByDeliverymanNickname(nickname);
+		
+		List<Post> postList = new ArrayList<>();
+		for(Post post : postListWithoutLocationInfo) {
+			
+			RequesterLocation requesterLocation = locationDao.getRequesterLocationById(post.getId());
+			MarketLocation marketLocation = locationDao.getMarketLocationById(post.getId());
+			
+			post.setRequesterLocation(requesterLocation);
+			post.setMarketLocation(marketLocation);
+			postList.add(post);
+		}
+		
+		return postList;
+	}
 }
