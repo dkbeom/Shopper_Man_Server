@@ -31,7 +31,11 @@
     <select id="getPostList" resultMap="postResultMap">
     	SELECT *
     	FROM POST
-    	WHERE PUBLISHER_NICKNAME != #{currentUserNickname}
+    	<where>
+    		<if test="currentUserNickname != null and currentUserNickname != ''">
+    			PUBLISHER_NICKNAME != #{currentUserNickname}
+    		</if>
+    	</where>
     	ORDER BY REGDATE DESC
     </select>
     

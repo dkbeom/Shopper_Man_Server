@@ -82,8 +82,11 @@ public class PostController {
 	@PostMapping("/get/list")
 	public List<Post> getPostList(@RequestHeader(value = "Authorization") String token, @RequestBody Location location) {
 	// 파라미터: mapX, mapY
-
-		String currentUserNickname = (String)securityService.getSubject(token).get("nickname");
+		
+		String currentUserNickname = "";
+		if(token != null && !token.equals("")) {
+			currentUserNickname = (String)securityService.getSubject(token).get("nickname");
+		}
 		
 		return postService.getPostList(currentUserNickname, location);
 	}
