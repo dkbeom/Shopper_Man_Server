@@ -64,7 +64,7 @@ public class PostController {
 		}
 		
 		// 배달 요청자 포인트 차감
-		String subtractPoint = memberService.subtractPoint(currentUserId, post.getPrice() + post.getDeliveryTip());
+		String subtractPoint = memberService.subtractPoint(currentUserId, post.getDeliveryTip());
 		if(subtractPoint.equals("Lack of points problem")) {
 			return "{\"result\" : \"LACK_OF_POINTS\"}";
 		}

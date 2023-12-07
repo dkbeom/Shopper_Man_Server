@@ -121,4 +121,19 @@ public class MemberController {
     		return "{\"result\" : \"FAILURE\"}";
     	}
     }
+    
+    @GetMapping("/withdraw")
+    public String withdraw(@RequestHeader(value = "Authorization") String token, Integer point) {
+    	
+    	if(token == null || token.equals("")) {
+			return null;
+		}
+		
+		String currentUserId = (String)securityService.getSubject(token).get("id");
+		if(currentUserId == null) {
+			return null;
+		}
+    	
+    	return memberService.subtractPoint(currentUserId, point);
+    }
 }

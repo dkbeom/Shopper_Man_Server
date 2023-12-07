@@ -211,7 +211,7 @@ public class DeliveryController {
 		// 파라미터: POST id 리스트
 
 		String deliverymanNickname = (String)securityService.getSubject(token).get("nickname");
-
+		
 		for (Integer postId : postIdList) {
 			if (postService.getState(postId) == 0) {
 				// POST 테이블에 배달원 이름 적기
@@ -233,57 +233,32 @@ public class DeliveryController {
 	}
 
 	// 배달 완료 신청
-	@GetMapping("/complete/request")
-	public String requestCompletion(@RequestHeader(value = "Authorization") String token, Integer postId) {
+	@GetMapping("/complete")
+	public String complete(@RequestHeader(value = "Authorization") String token, Integer postId) {
 
 		String myNickname = (String)securityService.getSubject(token).get("nickname");
 
 		// 현재 로그인된 사용자가 게시글의 배달원인 경우
 		if (postService.getDeliverymanNickname(postId).equals(myNickname)) {
-			// 게시글 State 바꾸기 (배달중 -> 배달 완료 신청)
 			if (postService.getState(postId) == 1) {
+				// 게시글 State 바꾸기 (배달중 -> 배달 완료)
 				if (postService.setState(postId, 2)) {
+					// 배달원 포인트 증가
+					String deliverymanNickname = postService.getDeliverymanNickname(postId);
+					Integer deliveryTip = postService.getDeliveryTip(postId);
+					if (deliverymanNickname == null || deliveryTip == null || !myNickname.equals(deliverymanNickname)) {
+						return "{\"result\" : \"SERVICE_FAILURE\"}";
+					}
+					memberService.addPoint(deliverymanNickname, deliveryTip);
 					return "{\"result\" : \"COMPLETE\"}";
+				} else {
+					return "{\"result\" : \"SERVICE_FAILURE\"}";
 				}
 			} else {
-				return "{\"result\" : \"FAILURE\"}";
+				return "{\"result\" : \"STATE_FAILURE\"}";
 			}
-		}
-
-		return "{\"result\" : \"FAILURE\"}";
-	}
-
-	// 배달 완료 확인
-	@GetMapping("/complete/confirm")
-	public String confirmCompletion(@RequestHeader(value = "Authorization") String token, Integer postId) {
-
-		String myNickname = (String)securityService.getSubject(token).get("nickname");
-
-		// 현재 로그인된 사용자가 게시글의 게시자인 경우
-		if (postService.getPublisherNicknameByPostId(postId).equals(myNickname)) {
-
-			// 게시글 State 바꾸기 (배달 완료 신청 -> 배달 완료 확인)
-			if (postService.getState(postId) == 2) {
-				if (!postService.setState(postId, 3)) {
-					return "{\"result\" : \"FAILURE\"}";
-				}
-			} else {
-				return "{\"result\" : \"FAILURE\"}";
-			}
-
-			// 배달원 포인트 증가
-			String deliverymanNickname = postService.getDeliverymanNickname(postId);
-			Integer price = postService.getPrice(postId);
-			Integer deliveryTip = postService.getDeliveryTip(postId);
-			if (deliverymanNickname == null || price == null || deliveryTip == null) {
-				return "{\"result\" : \"FAILURE\"}";
-			}
-			memberService.addPoint(deliverymanNickname, price + deliveryTip);
-
-			return "{\"result\" : \"COMPLETE\"}";
-
 		} else {
-			return "{\"result\" : \"FAILURE\"}";
+			return "{\"result\" : \"DELIVERYMAN_MISMATCHED_FAILURE\"}";
 		}
 	}
 }

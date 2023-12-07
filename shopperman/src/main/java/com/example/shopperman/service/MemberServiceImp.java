@@ -125,7 +125,7 @@ public class MemberServiceImp implements MemberService {
 		
 		// 차감하려고 하는 포인트가 현재 포인트보다 많을 경우
 		if(memberDao.getPoint(id) < point) {
-			return "Lack of points problem";
+			return "{\"result\" : \"LACK_OF_POINTS\"}";
 		}
 		
 		Map<String, Object> idAndPoint = new HashedMap<>();
@@ -133,10 +133,10 @@ public class MemberServiceImp implements MemberService {
 		idAndPoint.put("point", point);
 		
 		if(memberDao.subtractPoint(idAndPoint) == true) {
-			return "No problem";
+			return "{\"result\" : \"SUCCESS\"}";
 		}
 		else {
-			return "Dao problem";
+			return "{\"result\" : \"DAO_PROBLEM\"}";
 		}
 	}
 
