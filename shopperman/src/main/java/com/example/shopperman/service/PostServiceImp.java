@@ -204,6 +204,11 @@ public class PostServiceImp implements PostService {
 	public Integer getDeliveryTip(Integer id) {
 		return postDao.getDeliveryTip(id);
 	}
+	
+	@Override
+	public String getTitle(Integer id) {
+		return postDao.getTitle(id);
+	}
 
 	@Override
 	public List<Post> getPostListByPublisherNickname(String nickname) {

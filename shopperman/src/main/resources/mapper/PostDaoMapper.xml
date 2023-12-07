@@ -103,6 +103,12 @@
     	WHERE ID = #{id}
     </select>
     
+    <select id="getTitle" resultType="String">
+    	SELECT TITLE
+    	FROM POST
+    	WHERE ID = #{id}
+    </select>
+    
     <select id="getPostListByPublisherNickname" resultMap="postResultMap">
     	SELECT *
     	FROM POST

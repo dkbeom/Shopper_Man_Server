@@ -83,6 +83,11 @@ public class MybatisPostDao implements PostDao {
 	public Integer getDeliveryTip(Integer id) {
 		return mapper.getDeliveryTip(id);
 	}
+	
+	@Override
+	public String getTitle(Integer id) {
+		return mapper.getTitle(id);
+	}
 
 	@Override
 	public List<Post> getPostListByPublisherNickname(String nickname) {

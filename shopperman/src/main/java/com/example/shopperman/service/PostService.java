@@ -46,6 +46,9 @@ public interface PostService {
 	// 특정 게시글의 deliveryTip 조회
 	Integer getDeliveryTip(Integer id);
 	
+	// 게시글 id로 게시글 제목 조회
+	String getTitle(Integer id);
+	
 	// 게시자 이름으로 게시글 리스트 조회
 	List<Post> getPostListByPublisherNickname(String nickname);
 	

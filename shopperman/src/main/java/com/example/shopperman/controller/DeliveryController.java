@@ -19,6 +19,7 @@ import com.example.shopperman.service.MemberService;
 import com.example.shopperman.service.PostService;
 import com.example.shopperman.service.SecurityService;
 import com.example.shopperman.util.TspBackTrackingAlgorithm;
+import com.example.shopperman.util.TspGreedyAlgorithm;
 
 @RestController
 @RequestMapping("/delivery")
@@ -158,7 +159,7 @@ public class DeliveryController {
 		 
 		 
 
-		 //////////////////////////////////////////////////////////////////////
+		//////////////////////////////////////////////////////////////////////
 		 
 		
 		Location myLocation = sortRequest.getMyLocation();
@@ -171,28 +172,37 @@ public class DeliveryController {
 			locationList.add(post.getRequesterLocation());
 			locationList.add(post.getMarketLocation());
 		}
-    	
-//    	// Greedy 알고리즘
-//		long startTime1 = System.currentTimeMillis();
-//    	TspGreedyAlgorithm tsp1 = new TspGreedyAlgorithm(locationList);
-//    	List<Location> orderedLocationList1 = tsp1.getTspOrderedLocationList(myLocation.getMapX(), myLocation.getMapY()); // 현재 위치 입력
-////    	List<Location> orderedLocationList1 = tsp1.getTspOrderedLocationList("0.0", "0.0"); // 현재 위치 입력
-//    	long endTime1 = System.currentTimeMillis();
-//    	long duration1 = endTime1 - startTime1;
-//    	System.out.println("Greedy 알고리즘 => " + duration1 + "밀리초");
-//    	System.out.println();
-    	
-    	// BackTracking 알고리즘
-    	long startTime2 = System.currentTimeMillis();
-    	TspBackTrackingAlgorithm tsp2 = new TspBackTrackingAlgorithm(locationList);
-    	List<Location> orderedLocationList2 = tsp2.getTspOrderedLocationList(myLocation.getMapX(), myLocation.getMapY()); // 현재 위치 입력
-//    	List<Location> orderedLocationList2 = tsp2.getTspOrderedLocationList("0.0", "0.0"); // 현재 위치 입력
-    	long endTime2 = System.currentTimeMillis();
-    	long duration2 = endTime2 - startTime2;
-    	System.out.println("BackTracking 알고리즘 => " + duration2 + "밀리초");
-    	System.out.println();
 		
-		return orderedLocationList2;
+		List<Location> orderedLocationList = null;
+		// Location들이 12개 이하인 경우, BackTracking 알고리즘
+		if(locationList.size() <= 12) {
+			// BackTracking 알고리즘
+	    	long startTime = System.currentTimeMillis();
+	    	TspBackTrackingAlgorithm tsp = new TspBackTrackingAlgorithm(locationList);
+	    	orderedLocationList = tsp.getTspOrderedLocationList(myLocation.getMapX(), myLocation.getMapY()); // 현재 위치 입력
+	    	long endTime = System.currentTimeMillis();
+	    	long duration = endTime - startTime;
+	    	System.out.println("BackTracking 알고리즘 => " + duration + "밀리초");
+	    	System.out.println();
+		}
+		// Location들이 12개 초과인 경우, Greedy 알고리즘
+		else {
+			// Greedy 알고리즘
+			long startTime = System.currentTimeMillis();
+	    	TspGreedyAlgorithm tsp = new TspGreedyAlgorithm(locationList);
+	    	orderedLocationList = tsp.getTspOrderedLocationList(myLocation.getMapX(), myLocation.getMapY()); // 현재 위치 입력
+	    	long endTime = System.currentTimeMillis();
+	    	long duration = endTime - startTime;
+	    	System.out.println("Greedy 알고리즘 => " + duration + "밀리초");
+	    	System.out.println();
+		}
+    	
+    	// 게시글 제목 추가하기
+    	for(Location location : orderedLocationList) {
+    		location.setTitle(postService.getTitle(location.getId()));
+    	}
+		
+		return orderedLocationList;
 	}
 
 	// 배달 시작
